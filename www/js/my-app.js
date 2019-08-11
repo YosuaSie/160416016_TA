@@ -485,7 +485,6 @@ function desilFunction(nilaiData, nomorDesil) {
 	'Dari data di atas, nilai desilnya adalah <br><b>' + 
 	nilaiData[lkX-1]+' + (('+letakDesil+' - '+lkX+') * ('+nilaiData[lkX]+' - '+nilaiData[lkX-1]+
 	')) = '+desil.toFixed(3)+'</b></li>';
-
 	return html;
 }
 function desilFrekuensiFunction(arrVariable, arrFkk, nomorDesil)
