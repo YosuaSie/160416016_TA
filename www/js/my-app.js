@@ -1048,10 +1048,10 @@ function sdKelompokFunction(arrVariable, arrFrek, cekVarian) {
 			'X̄ = rata-rata sampel<br>'+
 			'n = jumlah sampel <br> Anda bisa memakai salah satu persamaan di atas</li>';
 		html += '<li><b>Langkah 2:</b><br> Cari mean dari data di atas.<b>Mean dari data di atas adalah = '+mean.toFixed(3)+' </b></li>';
-		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang,toFixed(3)+'</b></li>';
+		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang.toFixed(3)+'</b></li>';
 		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, lalu dikurangi 1 = <b>'+
 		totalFrek+' - 1 = '+penyebut+'</b></li>';
-		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, kemudian diakarkan.<b>V('+pembilang+' / '+penyebut+') = '+sdKelompok.toFixed(3)+'</b></li>';
+		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, kemudian diakarkan.<b>V('+pembilang.toFixed(3)+' / '+penyebut+') = '+sdKelompok.toFixed(3)+'</b></li>';
 	}
 	else {
 		penyebut = totalFrek;
@@ -1067,8 +1067,8 @@ function sdKelompokFunction(arrVariable, arrFrek, cekVarian) {
 		html += '<li><b>Langkah 2:</b><br> Cari mean dari data di atas.<b>Mean dari data di atas adalah = '+mean.toFixed(3)+' </b></li>';
 		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang.toFixed(3)+'</b></li>';
 		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, lalu dikurangi 1 = <b>'+
-		totalFrek+' - 1 = '+varianPenyebut+'</b></li>';
-		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, kemudian diakarkan.<b>V('+pembilang+' / '+varianPenyebut+') = '+sdKelompok.toFixed(3)+'</b></li>';
+		totalFrek+' - 1 = '+penyebut+'</b></li>';
+		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, kemudian diakarkan.<b>V('+pembilang.toFixed(3)+' / '+penyebut+') = '+sdKelompok.toFixed(3)+'</b></li>';
 	}
 	return html;
 }
@@ -2130,7 +2130,7 @@ function varianTunggal(nilaiData, cekVarian) {
 	}
 	return varian.toFixed(3);
 }
-function varianFrekuensiFunction(arrVariable, arrFrek, cekVarian) {
+function hasilVarianFrekuensi(arrVariable, arrFrek, cekVarian) {
 	var html = "";
 	var varian = 0;
 	var sum = 0;
@@ -2246,6 +2246,96 @@ function htmlVarianKelompok(arrVariable, arrFrek, cekVarian) {
 		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang.toFixed(3)+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
 	}
 	return html;
+}
+function sdTunggal(nilaiData, cekSD) {
+	var html = "";
+	var sd = 0;
+	var sum = 0;
+	var pembilang = 0;
+	var penyebut = 0;
+
+	for(i = 0; i < nilaiData.length; i++) {
+		sum += (parseFloat(nilaiData[i])); 
+	}
+
+	var mean = sum/nilaiData.length;
+
+	for(i = 0; i < nilaiData.length; i++) {
+		pembilang += Math.pow((parseFloat(nilaiData[i]) - parseFloat(mean.toFixed(3))),2);
+	}
+
+	if(cekSD == "sampel") {
+		penyebut = nilaiData.length - 1;
+		sd = Math.sqrt(parseFloat(pembilang.toFixed(3)) / penyebut);
+	}
+	else {
+		penyebut = nilaiData.length;
+		sd = Math.sqrt(parseFloat(pembilang.toFixed(3)) / penyebut);
+	}
+	return sd.toFixed(3);
+}
+function hasilSDFrekuensi(arrVariable, arrFrek, cekVarian) {
+	var html = "";
+	var varian = 0;
+	var sum = 0;
+	var pembilang = 0;
+	var penyebut = 0;
+	var sd = 0;
+	var totalFrek = 0;
+
+	for(i = 0; i < arrVariable.length; i++) {
+		sum += (parseFloat(arrVariable[i])*parseInt(arrFrek[i]));
+		totalFrek += parseInt(arrFrek[i]);
+	}
+
+	var mean = sum/totalFrek;
+
+	for(i = 0; i < arrVariable.length; i++) {
+		pembilang += Math.pow(parseFloat(arrVariable[i]) - parseFloat(mean.toFixed(3)),2)*arrFrek[i];
+	}
+
+	if(cekVarian == "sampel") {
+		penyebut = totalFrek - 1;
+		sd = Math.sqrt(parseFloat(pembilang.toFixed(3)) / penyebut);
+	}
+	else {
+		penyebut = totalFrek;
+		sd = Math.sqrt(parseFloat(pembilang.toFixed(3)) / penyebut);
+	}
+	return sd.toFixed(3);
+}
+function sdKelompok(arrVariable, arrFrek, cekVarian) {
+	var sum = 0;
+	var totalFrek = 0;
+	var titikTengah = [];
+	var pembilang = 0;
+	var penyebut = 0;
+	var sdKelompok = 0;
+
+	for(var i=0; i<arrVariable.length; i++)
+	{
+		var batasBawah = parseFloat(arrVariable[i].split('-')[0]);
+		var batasAtas = parseFloat(arrVariable[i].split('-')[1]);
+		titikTengah[i] = (batasAtas+batasBawah)/2;
+
+		sum += (parseFloat(titikTengah[i])*parseInt(arrFrek[i]));
+		totalFrek += parseInt(arrFrek[i]);
+	}
+	var mean = sum/totalFrek;
+
+	for(i = 0; i < arrVariable.length; i++) {
+		pembilang += Math.pow(parseFloat(titikTengah[i]) - parseFloat(mean.toFixed(3)),2)*parseInt(arrFrek[i]);
+	}
+
+	if(cekVarian == "sampel") {
+		penyebut = totalFrek - 1;
+		sdKelompok = Math.sqrt(parseFloat(pembilang.toFixed(3)) / penyebut);
+	}
+	else {
+		penyebut = totalFrek;
+		sdKelompok = Math.sqrt(parseFloat(pembilang.toFixed(3)) / penyebut);
+	}
+	return sdKelompok.toFixed(3);
 }
 //FUNCTION RANDOM INPUT
 function randomKualitatif(jumlahData) { //**
@@ -3265,7 +3355,7 @@ function buatSoalUPK() {
 	arrSoalVarian[1] = new objSoal(soal,arrOpsi, hasilVarian,html);
 
 	//Varian: Soal 3
-	randomData = randomSoalDataKelompokKontinu(100,4,900, 0.1);
+	randomData = randomSoalDataKelompokKontinu(500,4,100, 0.1);
 	frekuensi = randomFrekuensi(4,1,20);
 	arrData = randomData.split(',');
 	arrFrekuensi = frekuensi.split(',');
@@ -3309,28 +3399,120 @@ function buatSoalUPK() {
 	frekuensi = randomFrekuensi(5,1,25);
 	arrData = randomData.split(',');
 	arrFrekuensi = frekuensi.split(',');
-	hasilVarian = varianFrekuensiFunction(arrData, arrFrekuensi, "populasi");
+	hasilVarian = varianKelompok(arrData, arrFrekuensi, "populasi");
 	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
 	soal = "Diketahui hasil ujian tes IQ seluruh karyawan suatu perusahaan adalah sebagai berikut. \nNilai tes IQ: "+randomData+"\nJumlah karyawan: "+frekuensi+"\nHitung Varian dari data di atas?";
 	html = htmlVarianKelompok(arrData, arrFrekuensi, "populasi"); 
 	arrSoalVarian[6] = new objSoal(soal,arrOpsi, hasilVarian,html);
 
 	//Varian: Soal 8
-	randomData = randomSoalDataULTunggalKontinu(10, 100, 15, 0.5);
+	randomData = randomSoalDataULTunggalKontinu(10, 100, 5, 0.5);
 	frekuensi = randomFrekuensi(5,1,15);
 	arrData = randomData.split(',');
 	arrFrekuensi = frekuensi.split(',');
-	hasilVarian = varianKelompok(arrData, arrFrekuensi, "sampel");
+	hasilVarian = varianFrekuensiFunction(arrData, arrFrekuensi, "sampel");
 	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
 	soal = "Berikut ini adalah survey tentang konsumsi cokelat (gr) per bulan di beberapa keluarga di Daerah J:\n"+
 		"Konsumsi cokelat (gr):"+randomData+
 		"\nBanyak Keluarga: "+arrFrekuensi+
 		"\nBerkapakah varian dari survey di atas?";
-	html = htmlVarianKelompok(arrData, arrFrekuensi, "sampel"); 
+	html = hasilVarianFrekuensi(arrData, arrFrekuensi, "sampel"); 
 	arrSoalVarian[7] = new objSoal(soal,arrOpsi, hasilVarian,html);
 
-	for(var i=0; i<arrSoalVarian.length; i++){
-		alert((i+1)+'.'+arrSoalVarian[i].soal + ' - '+arrSoalVarian[i].arrOpsi+' - '+arrSoalVarian[i].jawaban+'\n\n'+arrSoalVarian[i].langkahKerja);
+	// for(var i=0; i<arrSoalVarian.length; i++){
+	// 	alert((i+1)+'.'+arrSoalVarian[i].soal + ' - '+arrSoalVarian[i].arrOpsi+' - '+arrSoalVarian[i].jawaban+'\n\n'+arrSoalVarian[i].langkahKerja);
+	// }
+
+	//SD: Soal 1
+	var randomData = randomSoalDataULTunggalDiskrit(1,45,6);
+	var arrData = randomData.split(',');
+	var hasilSD = sdTunggal(arrData, "populasi");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	var html = sdFunction(arrData, "populasi");
+	soal = "Seorang peneliti mengambil data rata-rata pendapatan (dalam juta) ayah pada daerah ABC selama 6 bulan:\n"+
+		"Bulan: 1, 2, 3, 4, 5, 6\n"+
+		"Pendapatan: "+randomData+
+		"\nHitunglah standar deviasi dari data tersebut!";
+	arrSoalSD[0] = new objSoal(soal,arrOpsi,parseFloat(hasilSD),html);
+
+	//SD: Soal 2
+	randomData = randomSoalDataKelompokDiskrit(50,6,8);
+	frekuensi = randomFrekuensi(6,1,20);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilSD = sdKelompok(arrData, arrFrekuensi, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	soal = "Berikut ini adalah tabel hasil nilai ujian kalkulus sejumlah mahasiswa yang sudah disusun dalam tabel frekuensi.\nNilai ujian: "+randomData+"\nJumlah siswa: "+frekuensi+"\nHitung standar deviasi dari data diatas?";
+	html = sdKelompokFunction(arrData, arrFrekuensi, "sampel"); 
+	arrSoalSD[1] = new objSoal(soal,arrOpsi, hasilSD,html);
+
+	//SD: Soal 3
+	randomData = randomSoalDataKelompokKontinu(500,4,100, 0.1);
+	frekuensi = randomFrekuensi(4,1,20);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilSD = sdKelompok(arrData, arrFrekuensi, "populasi");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	soal = "Hitunglah standar deviasi dari datah di bawah ini, jika diketahui nilai ujian kalkulus mahasiswa Teknik Informatika adalah sebagai berikut.\nNilai ujian: "+randomData+"\nJumlah siswa: "+frekuensi;
+	html = sdKelompokFunction(arrData, arrFrekuensi, "populasi"); 
+	arrSoalSD[2] = new objSoal(soal,arrOpsi, hasilSD,html); 
+
+	//SD: Soal 4
+	var randomData = randomSoalDataULTunggalKontinu(100, 190, 15, 0.5);
+	var arrData = randomData.split(',');
+	var hasilSD = sdTunggal(arrData, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	var html = sdFunction(arrData, "sampel");
+	soal = "Diketahui sampel berat badan (cm) 15 anak di kelas ABC adalah sebagai berikut :\n"+randomData+
+		"\nHitunglah standar deviasi dari data tersebut!";
+	arrSoalSD[3] = new objSoal(soal,arrOpsi,parseFloat(hasilSD),html);
+
+	//SD: Soal 5
+	var randomData = randomSoalDataULTunggalDiskrit(100, 150, 7);
+	var arrData = randomData.split(',');
+	var hasilSD = sdTunggal(arrData, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	var html = sdFunction(arrData, "sampel");
+	soal = "Diketahui 7 rata-rata pendapatan perusahaan (dalam jutaan rupiah) dari 12 perusahaan setiap bulan pada Daerah KLM adalah sebagai berikut:\n"+randomData+
+		"\nBerapakah standar deviasi dari data tersebut!";
+	arrSoalSD[4] = new objSoal(soal,arrOpsi,parseFloat(hasilSD),html);
+
+	//SD: Soal 6
+	var randomData = randomSoalDataULTunggalDiskrit(17, 21, 20);
+	var arrData = randomData.split(',');
+	var hasilSD = sdTunggal(arrData, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	var html = sdFunction(arrData, "sampel");
+	soal = "Berapakah standar deviasi dari data sampel umur mahasiswa Jurusan ABC, Universitas A, jika diketahui data sampel umur mahasiswa tersebut adalah sebagai berikut:\n"+randomData;
+	arrSoalSD[5] = new objSoal(soal,arrOpsi,parseFloat(hasilSD),html);
+
+	//SD: Soal 7
+	randomData = randomSoalDataKelompokDiskrit(90,5,10);
+	frekuensi = randomFrekuensi(5,1,25);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilSD = sdKelompok(arrData, arrFrekuensi, "populasi");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	soal = "Diketahui hasil ujian tes IQ seluruh karyawan suatu perusahaan adalah sebagai berikut. \nNilai tes IQ: "+randomData+"\nJumlah karyawan: "+frekuensi+"\nHitung standar deviasi dari data di atas?";
+	html = sdKelompokFunction(arrData, arrFrekuensi, "populasi"); 
+	arrSoalSD[6] = new objSoal(soal,arrOpsi, hasilSD,html);
+
+	//SD: Soal 8
+	randomData = randomSoalDataULTunggalKontinu(10, 100, 5, 0.5);
+	frekuensi = randomFrekuensi(5,1,15);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilSD = hasilSDFrekuensi(arrData, arrFrekuensi, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilSD,"kontinu");
+	soal = "Berikut ini adalah survey tentang konsumsi cokelat (gr) per bulan di beberapa keluarga di Daerah J:\n"+
+		"Konsumsi cokelat (gr):"+randomData+
+		"\nBanyak Keluarga: "+arrFrekuensi+
+		"\nBerkapakah standar deviasi dari survey di atas?";
+	html = sdFrekuensiFunction(arrData, arrFrekuensi, "sampel"); 
+	arrSoalSD[7] = new objSoal(soal,arrOpsi, hasilSD,html);
+
+	for(var i=0; i<arrSoalSD.length; i++){
+		alert((i+1)+'.'+arrSoalSD[i].soal + ' - '+arrSoalSD[i].arrOpsi+' - '+arrSoalSD[i].jawaban+'\n\n'+arrSoalSD[i].langkahKerja);
 	}
 }
 buatSoalUPK();
