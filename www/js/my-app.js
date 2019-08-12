@@ -832,7 +832,7 @@ function varianFrekuensiFunction(arrVariable, arrFrek, cekVarian) {
 		html += '<li><b>Langkah 6:</b><br> Bagi hasil pada langkah 4 dan langkah 5, hasilnya adalah <b>'+pembilang.toFixed(3)+
 		' / '+penyebut+' = '+varian.toFixed(3)+'</b></li>';
 	}
-	return html;
+	return html;//tunggal frekuensi diketahui
 }
 var varianKFPembilang = 0;
 function varianKelompokFunctionPembilang(titikTengah, frekuensi) {
@@ -877,7 +877,7 @@ function varianKelompokFunction(arrVariable, arrFrek, cekVarian) {
 		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang.toFixed(3)+'</b></li>';
 		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, lalu dikurangi 1 = <b>'+
 		totalFrek+' - 1 = '+varianPenyebut+'</b></li>';
-		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
+		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang.toFixed(3)+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
 	}
 	else {
 		var varianPenyebut = totalFrek;
@@ -894,7 +894,7 @@ function varianKelompokFunction(arrVariable, arrFrek, cekVarian) {
 		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang.toFixed(3)+'</b></li>';
 		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, lalu dikurangi 1 = <b>'+
 		totalFrek+' - 1 = '+varianPenyebut+'</b></li>';
-		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
+		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang.toFixed(3)+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
 	}
 	return html;
 }
@@ -2104,20 +2104,20 @@ function htmlPersentilKelompok(arrayData, arrayFkk, nomorPersentil, jenisVariabe
 	return html;
 }
 function varianTunggal(nilaiData, cekVarian) {
+	var html = "";
 	var varian = 0;
 	var sum = 0;
 	var pembilang = 0;
 	var penyebut = 0;
-	var varian = 0;
 
 	for(i = 0; i < nilaiData.length; i++) {
-		sum += (nilaiData[i]*1); 
+		sum += (parseFloat(nilaiData[i]));
 	}
 
 	var mean = sum/nilaiData.length;
 
 	for(i = 0; i < nilaiData.length; i++) {
-		pembilang += Math.pow(((nilaiData[i]*1) - mean.toFixed(3)),2); 
+		pembilang += Math.pow((parseFloat(nilaiData[i]) - parseFloat(mean.toFixed(3))),2); 
 	}
 
 	if(cekVarian == "sampel") {
@@ -2130,84 +2130,120 @@ function varianTunggal(nilaiData, cekVarian) {
 	}
 	return varian.toFixed(3);
 }
-function varianKelompok(arrData, frekuensi, cekVarian) {
-	var index = 0;
-	var frekuensi = 0;
-	var total = 0;
-	var varianTT2 = 0;
+function varianFrekuensiFunction(arrVariable, arrFrek, cekVarian) {
+	var html = "";
+	var varian = 0;
+	var sum = 0;
+	var pembilang = 0;
+	var penyebut = 0;
+	var totalFrek = 0;
 
-	for(var i=0; i<arrData.length; i++){
-		var batasBawah = parseFloat(arrData[i].split('-')[0]);
-		var batasAtas = parseFloat(arrData[i].split('-')[1]);
-		var titikTengah = (batasAtas + batasBawah)/2;
-		total += titikTengah*parseInt(arrFrekuensi[i]);
-		varianTT2 += titikTengah*titikTengah*parseInt(arrFrekuensi[i]);
-		frekuensi += parseInt(arrFrekuensi[i]);
+	for(i = 0; i < arrVariable.length; i++) {
+		sum += (parseFloat(arrVariable[i])*parseInt(arrFrek[i]));
+		totalFrek += parseInt(arrFrek[i]);
 	}
 
-	var varianPembilang = Math.pow(total.toFixed(3), 2);
+	var mean = sum/totalFrek;
+
+	for(i = 0; i < arrVariable.length; i++) {
+		pembilang += Math.pow(parseFloat(arrVariable[i]) - parseFloat(mean.toFixed(3)),2)*arrFrek[i];
+	}
 
 	if(cekVarian == "sampel") {
-		var varianPenyebut = frekuensi - 1;
-		var varianKelompok = varianPembilang * varianTT2 / varianPenyebut;
+		penyebut = totalFrek - 1;
+		varian = pembilang.toFixed(3) / penyebut;
 	}
 	else {
-		var varianPenyebut = frekuensi;
-		var varianKelompok = varianPembilang * varianTT2 / varianPenyebut;
+		penyebut = totalFrek;
+		varian = pembilang.toFixed(3) / penyebut;
+	}
+	return varian.toFixed(3);//tunggal frekuensi diketahui
+}
+function varianKelompok(arrVariable, arrFrek, cekVarian) {
+	var sum = 0;
+	var totalFrek = 0;
+	var titikTengah = [];
+	var pembilang = 0;
+	var varianKelompok = 0;
+	for(var i=0; i<arrVariable.length; i++)
+	{
+		var batasBawah = parseFloat(arrVariable[i].split('-')[0]);
+		var batasAtas = parseFloat(arrVariable[i].split('-')[1]);
+		titikTengah[i] = (batasAtas+batasBawah)/2;
+
+		sum += (parseFloat(titikTengah[i])*parseInt(arrFrek[i]));
+		totalFrek += parseInt(arrFrek[i]);
+	}
+	var mean = sum/totalFrek;
+
+	for(i = 0; i < arrVariable.length; i++) {
+		pembilang += Math.pow(parseFloat(titikTengah[i]) - parseFloat(mean.toFixed(3)),2)*parseInt(arrFrek[i]);
+	}
+
+	if(cekVarian == "sampel") {
+		var varianPenyebut = totalFrek - 1;
+		varianKelompok = pembilang / varianPenyebut;
+	}
+	else {
+		var varianPenyebut = totalFrek;
+		varianKelompok = pembilang / varianPenyebut;
 	}
 	return varianKelompok.toFixed(3);
 }
-function htmlVarianKelompok(arrData, frekuensi, cekVarian) {
-	var index = 0;
-	var frekuensi = 0;
-	var total = 0;
-	var varianTT2 = 0;
+function htmlVarianKelompok(arrVariable, arrFrek, cekVarian) {
+	var sum = 0;
+	var totalFrek = 0;
+	var titikTengah = [];
+	var pembilang = 0;
+	var varianKelompok = 0;
+	for(var i=0; i<arrVariable.length; i++)
+	{
+		var batasBawah = parseFloat(arrVariable[i].split('-')[0]);
+		var batasAtas = parseFloat(arrVariable[i].split('-')[1]);
+		titikTengah[i] = (batasAtas+batasBawah)/2;
 
-	for(var i=0; i<arrData.length; i++){
-		var batasBawah = parseFloat(arrData[i].split('-')[0]);
-		var batasAtas = parseFloat(arrData[i].split('-')[1]);
-		var titikTengah = (batasAtas + batasBawah)/2;
-		total += titikTengah*parseInt(arrFrekuensi[i]);
-		varianTT2 += titikTengah*titikTengah*parseInt(arrFrekuensi[i]);
-		frekuensi += parseInt(arrFrekuensi[i]);
+		sum += (parseFloat(titikTengah[i])*parseInt(arrFrek[i]));
+		totalFrek += parseInt(arrFrek[i]);
 	}
+	var mean = sum/totalFrek;
 
-	var varianPembilang = Math.pow(total.toFixed(3), 2);
+	for(i = 0; i < arrVariable.length; i++) {
+		pembilang += Math.pow(parseFloat(titikTengah[i]) - parseFloat(mean.toFixed(3)),2)*parseInt(arrFrek[i]);
+	}
 
 	if(cekVarian == "sampel") {
-		var varianPenyebut = frekuensi - 1;
-		var varianKelompok = varianPembilang * varianTT2 / varianPenyebut;
+		var varianPenyebut = totalFrek - 1;
+		varianKelompok = pembilang / varianPenyebut;
 		html = '<li><b>Langkah 1:</b><br> Persamaan varian data berkelompok pengamatan sampel adalah <br>'+
-		'<img style="width:40%; padding-left: 30%; padding-top:0px; padding-bottom:0px;" src="img/varian-berkelompok-sampel.png"><br>'+
-		'dimana: <br>'+
-		's^2 = varian sampel<br>'+
-		'Xi = nilai data ke-i<br>'+
-		'fi = frekuensi data ke-i<br>'+
-		'X̄ = rata-rata sampel<br>'+
-		'n = jumlah sampel <br> Anda bisa memakai salah satu persamaan di atas</li>';
-		html += '<li><b>Langkah 2:</b><br> Cari hasil jumlah <b>(fi * Xi)^2 = '+varianPembilang+' </b></li>';
-		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi * (Xi)^2 = '+varianTT2+'</b></li>';
+			'<img style="width:40%; padding-left: 30%; padding-top:0px; padding-bottom:0px;" src="img/varian-berkelompok-sampel.png"><br>'+
+			'dimana: <br>'+
+			's^2 = varian sampel<br>'+
+			'Xi = nilai data ke-i<br>'+
+			'fi = frekuensi data ke-i<br>'+
+			'X̄ = rata-rata sampel<br>'+
+			'n = jumlah sampel <br> Anda bisa memakai salah satu persamaan di atas</li>';
+		html += '<li><b>Langkah 2:</b><br> Cari mean dari data di atas.<b>Mean dari data di atas adalah = '+mean.toFixed(3)+' </b></li>';
+		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang.toFixed(3)+'</b></li>';
 		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, lalu dikurangi 1 = <b>'+
-		frekuensi+' - 1 = '+varianPenyebut+'</b></li>';
-		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>('+varianPembilang+' * '+varianTT2+') / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
+		totalFrek+' - 1 = '+varianPenyebut+'</b></li>';
+		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang.toFixed(3)+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
 	}
 	else {
-		var varianPenyebut = frekuensi;
-		var varianKelompok = varianPembilang * varianTT2 / varianPenyebut;
-
-		html = '<li><b>Langkah 1:</b><br> Persamaan varian data berkelompok pengamatan populasi adalah <br>'+
-		'<img style="width:40%; padding-left: 30%; padding-top:0px; padding-bottom:0px;" src="img/varian-populasi.png"><br>'+
-		'dimana: <br>'+
-		'σ^2= varian populasi<br>'+
-		'Xi = nilai data ke-i<br>'+
-		'fi = frekuensi data ke-i<br>'+
-		'X̄ = rata-rata sampel<br>'+
-		'N = jumlah populasi <br> Anda bisa memakai salah satu persamaan di atas</li>';
-		html += '<li><b>Langkah 2:</b><br> Cari hasil jumlah <b>(fi * Xi)^2 = '+varianPembilang+' </b></li>';
-		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi * (Xi)^2 = '+varianTT2+'</b></li>';
-		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, N = <b>'+
-		varianPenyebut+'</b></li>';
-		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>('+varianPembilang+' * '+varianTT2+') / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
+		var varianPenyebut = totalFrek;
+		varianKelompok = pembilang / varianPenyebut;
+		html = '<li><b>Langkah 1:</b><br> Persamaan varian data berkelompok pengamatan sampel adalah <br>'+
+			'<img style="width:40%; padding-left: 30%; padding-top:0px; padding-bottom:0px;" src="img/varian-berkelompok-sampel.png"><br>'+
+			'dimana: <br>'+
+			's^2 = varian populasi<br>'+
+			'Xi = nilai data ke-i<br>'+
+			'fi = frekuensi data ke-i<br>'+
+			'μ = rata-rata populasi<br>'+
+			'N = jumlah populasi <br> Anda bisa memakai salah satu persamaan di atas</li>';
+		html += '<li><b>Langkah 2:</b><br> Cari mean dari data di atas.<b>Mean dari data di atas adalah = '+mean.toFixed(3)+' </b></li>';
+		html += '<li><b>Langkah 3:</b><br> Cari hasil jumlah <b>fi*(Xi-mean)^2 = '+pembilang.toFixed(3)+'</b></li>';
+		html += '<li><b>Langkah 4:</b><br> Hitung total frekuensi atau jumlah sampel data berkelompok, lalu dikurangi 1 = <b>'+
+		totalFrek+' - 1 = '+varianPenyebut+'</b></li>';
+		html += '<li><b>Langkah 5:</b><br> Masukan hasil langkah 2-4 ke dalam persamaan, <b>'+pembilang.toFixed(3)+' / '+varianPenyebut+' = '+varianKelompok.toFixed(3)+'</b></li>';
 	}
 	return html;
 }
@@ -2903,7 +2939,7 @@ function buatSoalUL() {
 	soal = "Ada beberapa pedagang nasi kuning di Daerah Rungkut, Surabaya. Pada suatu hari selesai berjualan dihitung jumlah keuntungannya. Hasilnya sebagai berikut:\n"+
 		"Keuntungan perhari (x Rp 1.000,-):"+randomData+
 		"\nBanyak Pedagang: "+arrFrekuensi+
-		"\nHitung keuntungan terendah dari "+(100-persen)+"% pedagang mie ayam di jalan Kedangsari yang mendapat keuntungan tertinggi!";
+		"\nHitung keuntungan terendah dari "+(100-persen)+"% pedagang mie ayam di Daerah Rungkut yang mendapat keuntungan tertinggi!";
 	arrSoalKuartil[1] = new objSoal(soal,arrOpsi,parseFloat(hasilKuartil),html);
 
 	//Kuartil: Soal 3
@@ -2922,7 +2958,7 @@ function buatSoalUL() {
 	hasilKuartil = kuartilKelompok(arrData, arrFkk, randomNomorUL, 'kontinu');
 	arrOpsi = randomOpsi(10,10,hasilKuartil,"kontinu");
 	html = htmlKuartilKelompok(arrData, arrFkk, randomNomorUL, 'kontinu');
-	soal = "Berikut ini adalah survey tentang konsumsi cokelat (gr) per bulan di beberapa keluarga di daerah KLM:\n"+
+	soal = "Berikut ini adalah survey tentang konsumsi cokelat (gr) per bulan di beberapa keluarga di Daerah KLM:\n"+
 		"Konsumsi cokelat (gr):"+randomData+
 		"\nBanyak Keluarga: "+arrFrekuensi+
 		"\nBerkapakah Q"+randomNomorUL+" dari survey di atas?";
@@ -3218,7 +3254,7 @@ function buatSoalUPK() {
 	arrSoalVarian[0] = new objSoal(soal,arrOpsi,parseFloat(hasilVarian),html);
 
 	//Varian: Soal 2
-	randomData = randomSoalDataKelompokDiskrit(30,6,10);
+	randomData = randomSoalDataKelompokDiskrit(50,6,8);
 	frekuensi = randomFrekuensi(6,1,20);
 	arrData = randomData.split(',');
 	arrFrekuensi = frekuensi.split(',');
@@ -3226,7 +3262,72 @@ function buatSoalUPK() {
 	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
 	soal = "Berikut ini adalah tabel hasil nilai ujian kalkulus sejumlah mahasiswa yang sudah disusun dalam tabel frekuensi.\nNilai ujian: "+randomData+"\nJumlah siswa: "+frekuensi+"\nHitung Varian dari data diatas?";
 	html = htmlVarianKelompok(arrData, arrFrekuensi, "sampel"); 
-	arrSoalVarian[1] = new objSoal(soal,arrOpsi, hasilVarian,html); 
+	arrSoalVarian[1] = new objSoal(soal,arrOpsi, hasilVarian,html);
+
+	//Varian: Soal 3
+	randomData = randomSoalDataKelompokKontinu(100,4,900, 0.1);
+	frekuensi = randomFrekuensi(4,1,20);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilVarian = varianKelompok(arrData, arrFrekuensi, "populasi");
+	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
+	soal = "Hitunglah varian dari datah di bawah ini, jika diketahui nilai ujian kalkulus mahasiswa Teknik Informatika adalah sebagai berikut.\nNilai ujian: "+randomData+"\nJumlah siswa: "+frekuensi;
+	html = htmlVarianKelompok(arrData, arrFrekuensi, "populasi"); 
+	arrSoalVarian[2] = new objSoal(soal,arrOpsi, hasilVarian,html); 
+
+	//Varian: Soal 4
+	var randomData = randomSoalDataULTunggalKontinu(100, 190, 15, 0.5);
+	var arrData = randomData.split(',');
+	var hasilVarian = varianTunggal(arrData, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
+	var html = varianFunction(arrData, "sampel");
+	soal = "Diketahui sampel berat badan (cm) 15 anak di kelas ABC adalah sebagai berikut :\n"+randomData+
+		"\nHitunglah varian dari data tersebut!";
+	arrSoalVarian[3] = new objSoal(soal,arrOpsi,parseFloat(hasilVarian),html);
+
+	//Varian: Soal 5
+	var randomData = randomSoalDataULTunggalDiskrit(100, 150, 7);
+	var arrData = randomData.split(',');
+	var hasilVarian = varianTunggal(arrData, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
+	var html = varianFunction(arrData, "sampel");
+	soal = "Diketahui 7 rata-rata pendapatan perusahaan (dalam jutaan rupiah) dari 12 perusahaan setiap bulan pada Daerah KLM adalah sebagai berikut:\n"+randomData+
+		"\nBerapakah varian dari data tersebut!";
+	arrSoalVarian[4] = new objSoal(soal,arrOpsi,parseFloat(hasilVarian),html);
+
+	//Varian: Soal 6
+	var randomData = randomSoalDataULTunggalDiskrit(17, 21, 20);
+	var arrData = randomData.split(',');
+	var hasilVarian = varianTunggal(arrData, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
+	var html = varianFunction(arrData, "sampel");
+	soal = "Berapakah varian dari data sampel umur mahasiswa Jurusan ABC, Universitas A, jika diketahui data sampel umur mahasiswa tersebut adalah sebagai berikut:\n"+randomData;
+	arrSoalVarian[5] = new objSoal(soal,arrOpsi,parseFloat(hasilVarian),html);
+
+	//Varian: Soal 7
+	randomData = randomSoalDataKelompokDiskrit(90,5,10);
+	frekuensi = randomFrekuensi(5,1,25);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilVarian = varianFrekuensiFunction(arrData, arrFrekuensi, "populasi");
+	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
+	soal = "Diketahui hasil ujian tes IQ seluruh karyawan suatu perusahaan adalah sebagai berikut. \nNilai tes IQ: "+randomData+"\nJumlah karyawan: "+frekuensi+"\nHitung Varian dari data di atas?";
+	html = htmlVarianKelompok(arrData, arrFrekuensi, "populasi"); 
+	arrSoalVarian[6] = new objSoal(soal,arrOpsi, hasilVarian,html);
+
+	//Varian: Soal 8
+	randomData = randomSoalDataULTunggalKontinu(10, 100, 15, 0.5);
+	frekuensi = randomFrekuensi(5,1,15);
+	arrData = randomData.split(',');
+	arrFrekuensi = frekuensi.split(',');
+	hasilVarian = varianKelompok(arrData, arrFrekuensi, "sampel");
+	arrOpsi = randomOpsi(10,10,hasilVarian,"kontinu");
+	soal = "Berikut ini adalah survey tentang konsumsi cokelat (gr) per bulan di beberapa keluarga di Daerah J:\n"+
+		"Konsumsi cokelat (gr):"+randomData+
+		"\nBanyak Keluarga: "+arrFrekuensi+
+		"\nBerkapakah varian dari survey di atas?";
+	html = htmlVarianKelompok(arrData, arrFrekuensi, "sampel"); 
+	arrSoalVarian[7] = new objSoal(soal,arrOpsi, hasilVarian,html);
 
 	for(var i=0; i<arrSoalVarian.length; i++){
 		alert((i+1)+'.'+arrSoalVarian[i].soal + ' - '+arrSoalVarian[i].arrOpsi+' - '+arrSoalVarian[i].jawaban+'\n\n'+arrSoalVarian[i].langkahKerja);
