@@ -1,5 +1,5 @@
 <!--Dynamic Page -->
-<div class="page" data-name="latihan-soal">
+<div class="page" data-name="latihan">
 <div class="page-content hide-navbar-on-scroll">
 <!-- MENU-->
 <div class="menu hamburger-menu">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="menu-item menu-item-dropdown hamburger-menu">
-      <div class="menu-item-content hamburger-menu title" style="background-color: #fc9000; color:white;">
+      <div class="menu-item-content hamburger-menu title" style="background-color: #fc9000; color:white; width: 135%;">
         <h4>Akhiri Latihan</h4>
       </div>
     </div>
@@ -23,15 +23,52 @@
 </div>
 
 <!-- Nomor Latihan Soal -->
-<div>
-  
+<div class="data-table data-table-init card">
+  <!-- <ul class="nomor-ls" style="padding-left: 0%;">
+    <li><a href="#1">1</a></li>
+    <li><a href="#2">2</a></li>
+    <li><a href="#contact">3</a></li>
+    <li><a href="#about">4</a></li>
+    <li><a href="#1">5</a></li>
+    <li><a href="#2">6</a></li>
+    <li><a href="#contact">7</a></li>
+    <li><a href="#about">8</a></li>
+    <li><a href="#contact">9</a></li>
+    <li><a href="#about">10</a></li>
+  </ul> -->
+  <table>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+    </tr>
+  </table>
 </div>
-
-<div class="page" data-name="latihan">
+<div id="wadahMateri" style="padding-top:0px" class="page-content">
+<div class="block ikonChevron" style="margin-top:0px;">
   <div id="lsDF">
-    
-    <div class="container"><h1></h1></div>
-    <div id="exTab1" class="container"> 
+    <ul style="padding: 0%; list-style-type: none;">
+    <li><h2>Soal 1</h2></li>
+    <div id="exTab1" class="container">
+    <li>lorem ipsum dolor mit bla bla bla</li>
+    <li><b>a. 30</b></li> <!-- Bold ketika jawaban sudah dipilih, warna soal di atas (1 | 2| dst ) bukan di "soal 1", berubah jadi warna 
+    merah jika salah, hijau jika benar-->
+    <li>b. 15</li>
+    <li>c. 25</li>
+    <li>d. 40</li>
+    <div id="ls-jawaban"> //muncul ketika sudah pencet jawaban
+      <li style="color: #325d79;"><b>Jawaban</b></li>
+      <li>lorem ipsum.........</li>
+    </div>
+
+
      <!--  <ul  class="nav nav-pills">
         <li class="active">
           <a  href="#1a" data-toggle="tab">1</a>
@@ -57,9 +94,9 @@
         
         <div class="tab-pane" id="4a">
         </div> -->
+      </ul>
       </div>
     </div>
-
   </div>
   <div id="lsGrafik"  style="display:none">
       Isi Grafik
@@ -73,4 +110,7 @@
   <div id="lsUPD" style="display:none">
     UPD
   </div>
+</div>
+</div>
+
 </div>

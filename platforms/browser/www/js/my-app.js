@@ -3515,7 +3515,7 @@ function buatSoalUPK() {
 		alert((i+1)+'.'+arrSoalSD[i].soal + ' - '+arrSoalSD[i].arrOpsi+' - '+arrSoalSD[i].jawaban+'\n\n'+arrSoalSD[i].langkahKerja);
 	}
 }
-buatSoalUPK();
+//buatSoalUPK();
 
 $$(document).on('navbar:init', function (e) {
   var navbar = e.detail.navbar;
@@ -5584,7 +5584,7 @@ $$(document).on('page:init', function (e, page) {
   				alert("Input harus berupa angka, dan dipisahkan dengan \";\"");
   			}
   		});
-  		//----- PENGERJAAN DESIL -----//
+//----- PENGERJAAN DESIL -----//
   		$$("#tutupPengerjaanDesil").hide();
   		$$("#desilKontainerInput").hide();	
 
