@@ -2772,9 +2772,9 @@ function buatSoalUKP() {
 	html = htmlMean(arrData, arrFrekuensi, "tunggal");
 	arrSoalMean[6] = new objSoal(soal,arrOpsi,mean,html);
 
-	for(var i=0; i<arrSoalMean.length; i++){
-		alert((i+1)+arrSoalMean[i].soal + ' - '+arrSoalMean[i].arrOpsi+' - '+arrSoalMean[i].jawaban+'\n\n'+arrSoalMean[i].langkahKerja);
-	}
+	// for(var i=0; i<arrSoalMean.length; i++){
+	// 	alert((i+1)+arrSoalMean[i].soal + ' - '+arrSoalMean[i].arrOpsi+' - '+arrSoalMean[i].jawaban+'\n\n'+arrSoalMean[i].langkahKerja);
+	// }
 
 	//Median: soal 1
 	randomData = randomSoalDataULTunggalDiskrit(22, 34, 10);
@@ -2871,9 +2871,9 @@ function buatSoalUKP() {
 	html = htmlMedianTunggal(arrData, hasilMedian);
 	arrSoalMedian[5] = new objSoal(soal,arrOpsi,hasilMedian,html);
 
-	for(var i=0; i<arrSoalMedian.length; i++){
-		alert((i+1)+'.'+arrSoalMedian[i].soal + ' - '+arrSoalMedian[i].arrOpsi+' - '+arrSoalMedian[i].jawaban+'\n\n'+arrSoalMedian[i].langkahKerja);
-	} 
+	// for(var i=0; i<arrSoalMedian.length; i++){
+	// 	alert((i+1)+'.'+arrSoalMedian[i].soal + ' - '+arrSoalMedian[i].arrOpsi+' - '+arrSoalMedian[i].jawaban+'\n\n'+arrSoalMedian[i].langkahKerja);
+	// } 
 
 	//Modus: soal 1
 	arrData = randomKualitatif(25);
@@ -2980,9 +2980,9 @@ function buatSoalUKP() {
 	"\nManakah nilai yang sering muncul dari data berat badan di atas?";
 	arrSoalModus[5] = new objSoal(soal,arrOpsi,arrJawaban,html);
 
-	for(var i=0; i<arrSoalModus.length; i++){
-		alert((i+1)+'.'+arrSoalModus[i].soal + ' - '+arrSoalModus[i].arrOpsi+' - '+arrSoalModus[i].jawaban+'\n\n'+arrSoalModus[i].langkahKerja);
-	}
+	// for(var i=0; i<arrSoalModus.length; i++){
+	// 	alert((i+1)+'.'+arrSoalModus[i].soal + ' - '+arrSoalModus[i].arrOpsi+' - '+arrSoalModus[i].jawaban+'\n\n'+arrSoalModus[i].langkahKerja);
+	// }
 }
 // buatSoalUKP();
 function buatSoalUL() {
@@ -3121,9 +3121,9 @@ function buatSoalUL() {
 		"\nBerkapakah Q"+randomNomorUL+" dari survey di atas?";
 	arrSoalKuartil[6] = new objSoal(soal,arrOpsi,parseFloat(hasilKuartil),html);
 
-	for(var i=0; i<arrSoalKuartil.length; i++){
-		alert((i+1)+'.'+arrSoalKuartil[i].soal + ' - '+arrSoalKuartil[i].arrOpsi+' - '+arrSoalKuartil[i].jawaban+'\n\n'+arrSoalKuartil[i].langkahKerja);
-	}
+	// for(var i=0; i<arrSoalKuartil.length; i++){
+	// 	alert((i+1)+'.'+arrSoalKuartil[i].soal + ' - '+arrSoalKuartil[i].arrOpsi+' - '+arrSoalKuartil[i].jawaban+'\n\n'+arrSoalKuartil[i].langkahKerja);
+	// }
 
 	//Desil: Soal 1
 	randomData = randomSoalDataULTunggalDiskrit(104,140,12);
@@ -3235,9 +3235,9 @@ function buatSoalUL() {
 		"\nBerkapakah Desil "+randomNomorUL+" dari data di atas?";
 	arrSoalDesil[6] = new objSoal(soal,arrOpsi,parseFloat(hasilDesil),html);
 
-	for(var i=0; i<arrSoalDesil.length; i++){
-		alert((i+1)+'.'+arrSoalDesil[i].soal + ' - '+arrSoalDesil[i].arrOpsi+' - '+arrSoalDesil[i].jawaban+'\n\n'+arrSoalDesil[i].langkahKerja);
-	}
+	// for(var i=0; i<arrSoalDesil.length; i++){
+	// 	alert((i+1)+'.'+arrSoalDesil[i].soal + ' - '+arrSoalDesil[i].arrOpsi+' - '+arrSoalDesil[i].jawaban+'\n\n'+arrSoalDesil[i].langkahKerja);
+	// }
 
 	//Persentil: Soal 1
 	randomData = randomSoalDataKelompokDiskrit(100,4,150);
@@ -3325,9 +3325,9 @@ function buatSoalUL() {
 		"\nHitunglah IQ terendah dari  "+randomNomorUL+"% mahasiswa yang mempunyai IQ teritinggi!";
 	arrSoalPersentil[5] = new objSoal(soal,arrOpsi,parseFloat(hasilPersentil),html);
 
-	for(var i=0; i<arrSoalPersentil.length; i++){
-		alert((i+1)+'.'+arrSoalPersentil[i].soal + ' - '+arrSoalPersentil[i].arrOpsi+' - '+arrSoalPersentil[i].jawaban+'\n\n'+arrSoalPersentil[i].langkahKerja);
-	}
+	// for(var i=0; i<arrSoalPersentil.length; i++){
+	// 	alert((i+1)+'.'+arrSoalPersentil[i].soal + ' - '+arrSoalPersentil[i].arrOpsi+' - '+arrSoalPersentil[i].jawaban+'\n\n'+arrSoalPersentil[i].langkahKerja);
+	// }
 }
 //buatSoalUL();
 function buatSoalUPK() {
@@ -3511,9 +3511,9 @@ function buatSoalUPK() {
 	html = sdFrekuensiFunction(arrData, arrFrekuensi, "sampel"); 
 	arrSoalSD[7] = new objSoal(soal,arrOpsi, hasilSD,html);
 
-	for(var i=0; i<arrSoalSD.length; i++){
-		alert((i+1)+'.'+arrSoalSD[i].soal + ' - '+arrSoalSD[i].arrOpsi+' - '+arrSoalSD[i].jawaban+'\n\n'+arrSoalSD[i].langkahKerja);
-	}
+	// for(var i=0; i<arrSoalSD.length; i++){
+	// 	alert((i+1)+'.'+arrSoalSD[i].soal + ' - '+arrSoalSD[i].arrOpsi+' - '+arrSoalSD[i].jawaban+'\n\n'+arrSoalSD[i].langkahKerja);
+	// }
 }
 //buatSoalUPK();
 
@@ -5880,13 +5880,13 @@ $$(document).on('page:init', function (e, page) {
 		//console.log("in here");
   		$$('#lsKerjakan').click(function()
   		{
-  	// 		var selected = [];
-			// $('[name="ls-materi"]:checked').each(function(checkbox) {
-			// 		selected.push($$(this).val());
-			// });
+  			var selected = [];
+			$('[name="ls-materi"]:checked').each(function(checkbox) {
+					selected.push($$(this).val());
+			});
 
 			// console.log("before");
-			// localStorage.setItem("check",JSON.stringify(selected));
+			localStorage.setItem("check",JSON.stringify(selected));
 			page.router.navigate('/soal/');
 			//console.log(selected);
   			//console.log("click");
@@ -5894,29 +5894,185 @@ $$(document).on('page:init', function (e, page) {
 	}
 	else if (page.name=="soal")
 	{
-		// var item=JSON.parse(localStorage.getItem("check"));
-		// for (var i=0;i<item.length;i++)
-		// {
-		// 	if (item[i]=="lsDF")
-		// 	{
-		// 		randomSoal();
-		// 		console.log(arrSoal);
-		// 		for (var i=0;i<4;i++)
-		// 		{
-		// 			var obj=arrSoal[i];
-		// 			var html=obj.soal+"<br/>";
-		// 			html=html+"<input type='radio'>"+obj.jawaban1+"<br/>";
-		// 			html=html+"<input type='radio'>"+obj.jawaban2+"<br/>";
-		// 			html=html+"<input type='radio'>"+obj.jawaban3+"<br/>";
-		// 			html=html+"<input type='radio'>"+obj.jawaban4+"<br/>";
-		// 			$$("#"+(i+1)+"a").html(html);
-		// 		}
-		// 	}
-		// 	$$("#"+item[i]).show();
-		// }
+		var html = "";
+		var item=JSON.parse(localStorage.getItem("check"));
+		for (var i=0;i<item.length;i++)
+		{
+			if (item[i]=="lsUKP")
+			{
+				buatSoalUKP();
+				shuffle(arrSoalMean);
+				shuffle(arrSoalMedian);
+				shuffle(arrSoalModus);
+				
+				//mean
+				var obj = arrSoalMean[0];
+				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<div id=\'exTab1\' class=\'container\'>";
+				html+="<li>"+obj.soal+"</li>";
+				obj.arrOpsi[3] = obj.jawaban;
+				shuffle(obj.arrOpsi);
+				for(var a=0; a<4; a++)
+				{
+					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				}
+
+				//median
+				var obj = arrSoalMedian[0];
+				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<div id=\'exTab1\' class=\'container\'>";
+				html+="<li>"+obj.soal+"</li>";
+				obj.arrOpsi[3] = obj.jawaban;
+				shuffle(obj.arrOpsi);
+				for(var a=0; a<4; a++)
+				{
+					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				}
+
+				//modus
+				var obj = arrSoalModus[0];
+				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<div id=\'exTab1\' class=\'container\'>";
+				html+="<li>"+obj.soal+"</li>";
+				obj.arrOpsi[3] = obj.jawaban;
+				shuffle(obj.arrOpsi);
+				for(var a=0; a<4; a++)
+				{
+					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				}
+			}
+			else if(item[i] == "lsUL")
+			{
+				buatSoalUL();
+				shuffle(arrSoalKuartil);
+				shuffle(arrSoalDesil);
+				shuffle(arrSoalPersentil);
+				
+				//kuartil
+				var obj = arrSoalKuartil[0];
+				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<div id=\'exTab1\' class=\'container\'>";
+				html+="<li>"+obj.soal+"</li>";
+				obj.arrOpsi[3] = obj.jawaban;
+				shuffle(obj.arrOpsi);
+				for(var a=0; a<4; a++)
+				{
+					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				}
+
+				//desil
+				var obj = arrSoalDesil[0];
+				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<div id=\'exTab1\' class=\'container\'>";
+				html+="<li>"+obj.soal+"</li>";
+				obj.arrOpsi[3] = obj.jawaban;
+				shuffle(obj.arrOpsi);
+				for(var a=0; a<4; a++)
+				{
+					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				}
+
+				//persentil
+				var obj = arrSoalPersentil[0];
+				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<div id=\'exTab1\' class=\'container\'>";
+				html+="<li>"+obj.soal+"</li>";
+				obj.arrOpsi[3] = obj.jawaban;
+				shuffle(obj.arrOpsi);
+				for(var a=0; a<4; a++)
+				{
+					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				}
+			}
+			else if(item[i] == "lsUPD")
+			{
+				buatSoalUPK();
+				shuffle(arrSoalVarian);
+				shuffle(arrSoalSD);
+
+				var random = Math.floor(Math.random() * (+2 - +1)) + +1;
+				if(random == 1) //varian 2 + SD 1
+				{
+					//varian
+					var obj = arrSoalVarian[0];
+					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+					html+="<div id=\'exTab1\' class=\'container\'>";
+					html+="<li>"+obj.soal+"</li>";
+					obj.arrOpsi[3] = obj.jawaban;
+					shuffle(obj.arrOpsi);
+					for(var a=0; a<4; a++)
+					{
+						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+					}
+
+					var obj = arrSoalVarian[1];
+					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+					html+="<div id=\'exTab1\' class=\'container\'>";
+					html+="<li>"+obj.soal+"</li>";
+					obj.arrOpsi[3] = obj.jawaban;
+					shuffle(obj.arrOpsi);
+					for(var a=0; a<4; a++)
+					{
+						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+					}
+
+					//standar deviasi
+					var obj = arrSoalSD[0];
+					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+					html+="<div id=\'exTab1\' class=\'container\'>";
+					html+="<li>"+obj.soal+"</li>";
+					obj.arrOpsi[3] = obj.jawaban;
+					shuffle(obj.arrOpsi);
+					for(var a=0; a<4; a++)
+					{
+						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+					}
+				}
+				if(random == 2) //varian 1 + SD 2
+				{
+					//varian
+					var obj = arrSoalVarian[0];
+					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+					html+="<div id=\'exTab1\' class=\'container\'>";
+					html+="<li>"+obj.soal+"</li>";
+					obj.arrOpsi[3] = obj.jawaban;
+					shuffle(obj.arrOpsi);
+					for(var a=0; a<4; a++)
+					{
+						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+					}
+
+					//standar deviasi
+					var obj = arrSoalSD[0];
+					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+					html+="<div id=\'exTab1\' class=\'container\'>";
+					html+="<li>"+obj.soal+"</li>";
+					obj.arrOpsi[3] = obj.jawaban;
+					shuffle(obj.arrOpsi);
+					for(var a=0; a<4; a++)
+					{
+						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+					}
+
+					var obj = arrSoalSD[1];
+					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+					html+="<div id=\'exTab1\' class=\'container\'>";
+					html+="<li>"+obj.soal+"</li>";
+					obj.arrOpsi[3] = obj.jawaban;
+					shuffle(obj.arrOpsi);
+					for(var a=0; a<4; a++)
+					{
+						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+					}
+				}
+			}
+		}
+
+		$$("#lsDF").html(html);
 		//console.log(item);
 	}
-	else if (page.name == "olah-data") {
+	else if (page.name == "olah-data") 
+	{
 		var cekpodDF = "odDF";
 		var cekpodGrafik = "odGrafik";
 		var cekpodUKP = "odUKP";
