@@ -1198,6 +1198,101 @@ function cekCheckbox(namaChb) {
   	}
 }
 //FUNCTION UNTUK KERJA SOAL
+function dfFunction(cekFrekuensi, cekJenisVariabel, CekJenisData, cekSifat, randomPertanyaan, nilaiData, frek) {
+	var nilaiMax = Math.max.apply(null, nilaiData);
+	var nilaiMin = Math.min.apply(null, nilaiData);
+	var range = 0;
+	var kelasInterval = 0;
+	var lebarKelompok = 0;
+	var hitung = 0;
+	var sisa = 0;
+	var batasBawah = 0;
+	var batasAtas = 0;
+	var frekKumulatif = 0;
+	var html = "";
+	var htmlTable = '';
+	var htmlHeader = '';
+	var frekuensi = 0;
+	var persenFrekKumulatif = 0;
+	var titikTengah = (batasBawah+batasBawah+lebarKelompok)/2;
+	var frekRelatif = frekuensi/nilaiData.length;
+
+	//array
+	var arrVariable = [];
+	var arrFkk = [];
+	var arrFrek = [];
+	var arrTB = [];
+	var arrTitikTengah = [];
+	var arrPFkk = [];
+
+	//header
+	if(cekFrekuensi == 'belum' && cekJenisVariabel == 'diskrit' && cekJenisData == 'berkelompok' && cekSifat == 'kuantitatif')
+	{
+		range = nilaiMax-nilaiMin+1;
+
+		kelasInterval = 1+3.3*Math.log10(nilaiData.length);
+		kelasInterval.toFixed(2);
+
+		lebarKelompok = Math.ceil(range)/Math.ceil(kelasInterval);
+		Math.ceil(lebarKelompok);
+
+		//Masukan Data ke Dalam Tabel Distribusi Frekuensi
+		batasBawah = nilaiMin;
+		lebarKelompok = Math.ceil(lebarKelompok);
+		for(var i=1; i<=Math.ceil(kelasInterval); i++)
+		{
+			if(batasBawah <= nilaiMax)
+			{
+				frekuensi = 0;
+				htmlTable += '<tr>';
+				htmlTable += '<td><input type=\"text\" value=\"'+batasBawah+'-'+(batasBawah+lebarKelompok)+'\"></td>';
+
+				//ambil frekuensi
+				for(var a=0; a<nilaiData.length; a++)
+				{
+					if(nilaiData[a] >= batasBawah && nilaiData[a] <= batasBawah+lebarKelompok)
+					{
+						frekuensi++;
+					}
+				}
+
+				titikTengah = (batasBawah+batasBawah+lebarKelompok)/2;
+
+				frekRelatif = (frekuensi/nilaiData.length).toFixed(2);
+
+				frekKumulatif+=frekuensi;
+				persenFrekKumulatif += (frekRelatif*100).toFixed(2);
+
+				//isi array
+				arrTitikTengah[i-1] += titikTengah;
+				arrTB[i-1] = batasBawah-0.5;
+				arrVariable[i-1] = batasBawah+'-'+(batasBawah+lebarKelompok);
+				arrFrek[i-1] = frekuensi;
+				arrFkk[i-1] = frekKumulatif;
+				arrPFkk[i-1] = persenFrekKumulatif;
+
+				batasBawah = batasBawah+lebarKelompok+1; //diskrit dikasih gap 1 antar data
+				alert(range+"-"+kelasInterval+";" + batasBawah+ "+" + lebarKelompok);
+			}
+		}
+
+	}
+	if (randomPertanyaan == 1) {
+		return arrVariable;
+	}
+	else if (randomPertanyaan == 2) {
+		return arrTitikTengah;
+	}
+	else if (randomPertanyaan == 3) {
+		return arrFrek;
+	}
+	else if (randomPertanyaan == 4) {
+		return arrFkk;
+	}
+	else {
+		return arrPFkk;
+	}
+}
 function meanTunggal(arrData, arrFrekuensi){
 	var total = 0;
 	var frekuensi = 0;
@@ -2337,6 +2432,7 @@ function sdKelompok(arrVariable, arrFrek, cekVarian) {
 	}
 	return sdKelompok.toFixed(3);
 }
+
 //FUNCTION RANDOM INPUT
 function randomKualitatif(jumlahData) { //**
 
@@ -2673,6 +2769,8 @@ class objSoal{
     }
 }
 
+var arrSoalDF = [];
+var arrSoalGrafik = [];
 var arrSoalMean = [];
 var arrSoalMedian = [];
 var arrSoalModus = [];
@@ -2689,7 +2787,46 @@ var randomData = 0;
 var frekuensi = 0;
 var soal = 0;
 
-function buatSoalUKP() {
+//SOAL DISTRIBUSI FREKUENSI
+function buatSoalDF() { 
+	//random pertanyaan
+	var randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
+	var tanya = "";
+	if(randomPertanyaan == 1) {
+		tanya = "variabel";
+	}
+	else if (randomPertanyaan == 2) {
+		tanya = "titik tengah";
+	}
+	else if (randomPertanyaan == 3) {
+		tanya = "frekuensi";
+	}
+	else if (randomPertanyaan == 4) {
+		tanya = "frekuensi kumulatif";
+	}
+	else {
+		tanya = "persen frekuensi kumulatif";
+	}
+	//DF: soal1
+	randomData = randomSoalDataULTunggalDiskrit(100, 170,30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
+	arrData = randomData.split(',');
+	var df = dfFunction("belum", "diskrit", "kelompok", "kuantitatif", 1, arrData, []);
+	arrOpsi = randomOpsi(10,10,df,"kontinu");
+	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasinal pada suatu daerah tertentu adalah sebagai berikut:\n"+
+		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" setiap kelas?";
+	arrFrekuensi = [];
+	html = "teste";
+	arrSoalDF[0] = new objSoal(soal,arrOpsi,df,html);
+
+
+	for(var i=0; i<arrSoalDF.length; i++){
+		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
+	}
+}
+buatSoalDF();
+
+//SOAL UKURAN PEMUSATAN DATA
+function buatSoalUKP() { 
 	//Mean: soal1
 	randomData = randomSoalDataTunggalDiskrit(3,6,1);
 	frekuensi = randomFrekuensi(6,1,20);
@@ -2985,6 +3122,8 @@ function buatSoalUKP() {
 	// }
 }
 // buatSoalUKP();
+
+//SOAL UKURAN LOKASI
 function buatSoalUL() {
 	//Kuartil: Soal 1
 	randomData = randomSoalDataKelompokDiskrit(100,4,150);
@@ -3330,6 +3469,8 @@ function buatSoalUL() {
 	// }
 }
 //buatSoalUL();
+
+//SOAL UKURAN PENYEBARAN DATA
 function buatSoalUPK() {
 	//Varian: Soal 1
 	var randomData = randomSoalDataULTunggalDiskrit(1,45,6);
