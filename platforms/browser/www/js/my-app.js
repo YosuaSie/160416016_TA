@@ -1198,7 +1198,7 @@ function cekCheckbox(namaChb) {
   	}
 }
 //FUNCTION UNTUK KERJA SOAL
-function dfFunction(cekFrekuensi, cekJenisVariabel, CekJenisData, cekSifat, randomPertanyaan, nilaiData, frek) {
+function dfFunction(paramCekFrekuensi, paramCekJenisVariabel, paramCekJenisData, paramCekSifat, randomPertanyaan, nilaiData, frek) {
 	var nilaiMax = Math.max.apply(null, nilaiData);
 	var nilaiMin = Math.min.apply(null, nilaiData);
 	var range = 0;
@@ -1226,7 +1226,7 @@ function dfFunction(cekFrekuensi, cekJenisVariabel, CekJenisData, cekSifat, rand
 	var arrPFkk = [];
 
 	//header
-	if(cekFrekuensi == 'belum' && cekJenisVariabel == 'diskrit' && cekJenisData == 'berkelompok' && cekSifat == 'kuantitatif')
+	if(paramCekFrekuensi == 'belum' && paramCekJenisVariabel == 'diskrit' && paramCekJenisData == 'berkelompok' && paramCekSifat == 'kuantitatif')
 	{
 		range = nilaiMax-nilaiMin+1;
 
@@ -1244,9 +1244,6 @@ function dfFunction(cekFrekuensi, cekJenisVariabel, CekJenisData, cekSifat, rand
 			if(batasBawah <= nilaiMax)
 			{
 				frekuensi = 0;
-				htmlTable += '<tr>';
-				htmlTable += '<td><input type=\"text\" value=\"'+batasBawah+'-'+(batasBawah+lebarKelompok)+'\"></td>';
-
 				//ambil frekuensi
 				for(var a=0; a<nilaiData.length; a++)
 				{
@@ -1261,10 +1258,10 @@ function dfFunction(cekFrekuensi, cekJenisVariabel, CekJenisData, cekSifat, rand
 				frekRelatif = (frekuensi/nilaiData.length).toFixed(2);
 
 				frekKumulatif+=frekuensi;
-				persenFrekKumulatif += (frekRelatif*100).toFixed(2);
+				persenFrekKumulatif += parseFloat((frekRelatif*100).toFixed(2));
 
 				//isi array
-				arrTitikTengah[i-1] += titikTengah;
+				arrTitikTengah[i-1] = titikTengah;
 				arrTB[i-1] = batasBawah-0.5;
 				arrVariable[i-1] = batasBawah+'-'+(batasBawah+lebarKelompok);
 				arrFrek[i-1] = frekuensi;
@@ -1272,7 +1269,6 @@ function dfFunction(cekFrekuensi, cekJenisVariabel, CekJenisData, cekSifat, rand
 				arrPFkk[i-1] = persenFrekKumulatif;
 
 				batasBawah = batasBawah+lebarKelompok+1; //diskrit dikasih gap 1 antar data
-				alert(range+"-"+kelasInterval+";" + batasBawah+ "+" + lebarKelompok);
 			}
 		}
 
@@ -2808,15 +2804,18 @@ function buatSoalDF() {
 		tanya = "persen frekuensi kumulatif";
 	}
 	//DF: soal1
-	randomData = randomSoalDataULTunggalDiskrit(100, 170,30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
+	randomData = randomSoalDataULTunggalDiskrit(100, 170, 30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
 	arrData = randomData.split(',');
-	var df = dfFunction("belum", "diskrit", "kelompok", "kuantitatif", 1, arrData, []);
-	arrOpsi = randomOpsi(10,10,df,"kontinu");
+	var df = dfFunction("belum", "diskrit", "berkelompok", "kuantitatif", randomPertanyaan, arrData, []);
+	// alert(tanya+"-"+df);
+	var indexJawaban = Math.floor(Math.random() * (df.length - 1)) + 1;
+	var jawaban = df[indexJawaban-1];
+	arrOpsi = randomOpsi(10,10,jawaban,"kontinu");
 	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasinal pada suatu daerah tertentu adalah sebagai berikut:\n"+
-		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" setiap kelas?";
+		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" ke-"+indexJawaban+" dari data tersebut?";
 	arrFrekuensi = [];
 	html = "teste";
-	arrSoalDF[0] = new objSoal(soal,arrOpsi,df,html);
+	arrSoalDF[0] = new objSoal(soal,arrOpsi,jawaban,html);
 
 
 	for(var i=0; i<arrSoalDF.length; i++){
