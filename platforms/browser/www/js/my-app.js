@@ -2769,6 +2769,16 @@ class objSoal{
     }
 }
 
+// FUNCTION LATIHAN SOAL
+function nomorSoal(idx) {
+	console.log("click");
+	for (var i=0;i<10;i++)
+	{
+		$$("#csoal"+idx).hide();
+	}
+	$$("#csoal"+idx).show();
+}
+
 var arrSoalDF = [];
 var arrSoalGrafik = [];
 var arrSoalMean = [];
@@ -2788,46 +2798,48 @@ var frekuensi = 0;
 var soal = 0;
 
 //SOAL DISTRIBUSI FREKUENSI
-function buatSoalDF() { 
-	//random pertanyaan
-	var randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
-	var tanya = "";
-	if(randomPertanyaan == 1) {
-		tanya = "variabel";
-	}
-	else if (randomPertanyaan == 2) {
-		tanya = "titik tengah";
-	}
-	else if (randomPertanyaan == 3) {
-		tanya = "frekuensi";
-	}
-	else if (randomPertanyaan == 4) {
-		tanya = "frekuensi kumulatif";
-	}
-	else {
-		tanya = "persen frekuensi kumulatif";
-	}
-	//DF: soal1
-	randomData = randomSoalDataULTunggalDiskrit(100, 170,30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
-	arrData = randomData.split(',');
-	var df = dfFunction("belum", "diskrit", "kelompok", "kuantitatif", 1, arrData, []);
-	arrOpsi = randomOpsi(10,10,df,"kontinu");
-	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasinal pada suatu daerah tertentu adalah sebagai berikut:\n"+
-		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" setiap kelas?";
-	arrFrekuensi = [];
-	html = "teste";
-	arrSoalDF[0] = new objSoal(soal,arrOpsi,df,html);
+// function buatSoalDF() { 
+// 	//random pertanyaan
+// 	var randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
+// 	var tanya = "";
+// 	if(randomPertanyaan == 1) {
+// 		tanya = "variabel";
+// 	}
+// 	else if (randomPertanyaan == 2) {
+// 		tanya = "titik tengah";
+// 	}
+// 	else if (randomPertanyaan == 3) {
+// 		tanya = "frekuensi";
+// 	}
+// 	else if (randomPertanyaan == 4) {
+// 		tanya = "frekuensi kumulatif";
+// 	}
+// 	else {
+// 		tanya = "persen frekuensi kumulatif";
+// 	}
+// 	//DF: soal1
+// 	randomData = randomSoalDataULTunggalDiskrit(100, 170,30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
+// 	arrData = randomData.split(',');
+// 	var df = dfFunction("belum", "diskrit", "kelompok", "kuantitatif", 1, arrData, []);
+// 	arrOpsi = randomOpsi(10,10,df,"kontinu");
+// 	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasinal pada suatu daerah tertentu adalah sebagai berikut:\n"+
+// 		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" setiap kelas?";
+// 	arrFrekuensi = [];
+// 	html = "teste";
+// 	arrSoalDF[0] = new objSoal(soal,arrOpsi,df,html);
 
 
-	for(var i=0; i<arrSoalDF.length; i++){
-		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
-	}
-}
-buatSoalDF();
+// 	for(var i=0; i<arrSoalDF.length; i++){
+// 		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
+// 	}
+// }
+// buatSoalDF();
 
 //SOAL UKURAN PEMUSATAN DATA
 function buatSoalUKP() { 
 	//Mean: soal1
+
+
 	randomData = randomSoalDataTunggalDiskrit(3,6,1);
 	frekuensi = randomFrekuensi(6,1,20);
 	var arrData = randomData.split(',');
@@ -6035,8 +6047,35 @@ $$(document).on('page:init', function (e, page) {
 	}
 	else if (page.name=="soal")
 	{
+		console.log("in page soal");
+		
+		$$("#ns1").click(function()
+			{
+				console.log("click");
+				for (var i=0;i<10;i++)
+				{
+					$$("#csoal"+i).hide();
+				}
+				$$("#csoal1").show();
+			});
+
+		$$("#ns2").click(function()
+			{
+				console.log("click");
+				for (var i=0;i<10;i++)
+				{
+					$$("#csoal"+i).hide();
+				}
+				$$("#csoal2").show();
+			});
+
+		$$("#ns3").click(function()
+			{
+				nomorSoal(3);
+			});
 		var html = "";
 		var item=JSON.parse(localStorage.getItem("check"));
+		var ctr=1;
 		for (var i=0;i<item.length;i++)
 		{
 			if (item[i]=="lsUKP")
@@ -6048,7 +6087,7 @@ $$(document).on('page:init', function (e, page) {
 				
 				//mean
 				var obj = arrSoalMean[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<ul id='csoal"+ctr+"' style=\'padding: 0%; list-style-type: none;\'>";
 				html+="<div id=\'exTab1\' class=\'container\'>";
 				html+="<li>"+obj.soal+"</li>";
 				obj.arrOpsi[3] = obj.jawaban;
@@ -6057,7 +6096,9 @@ $$(document).on('page:init', function (e, page) {
 				{
 					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
 				}
-
+				html=html+"</ul>";
+				ctr++;
+				
 				//median
 				var obj = arrSoalMedian[0];
 				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
@@ -6091,39 +6132,41 @@ $$(document).on('page:init', function (e, page) {
 				
 				//kuartil
 				var obj = arrSoalKuartil[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<ul id='csoal1' style=\'display:none;padding: 0%; list-style-type: none;\'>";
 				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
+				html+="<li>xxx"+obj.soal+"</li>";
 				obj.arrOpsi[3] = obj.jawaban;
 				shuffle(obj.arrOpsi);
 				for(var a=0; a<4; a++)
 				{
 					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
 				}
-
+				html+="</ul>";
 				//desil
 				var obj = arrSoalDesil[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<ul id='csoal2' style=\'display:none; padding: 0%; list-style-type: none;\'>";
 				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
+				html+="<li>xx"+obj.soal+"</li>";
 				obj.arrOpsi[3] = obj.jawaban;
 				shuffle(obj.arrOpsi);
 				for(var a=0; a<4; a++)
 				{
 					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
 				}
+				html+="</ul>";
 
 				//persentil
 				var obj = arrSoalPersentil[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
+				html+="<ul id='csoal3' style=\'display:none; padding: 0%; list-style-type: none;\'>";
 				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
+				html+="<li>xx"+obj.soal+"</li>";
 				obj.arrOpsi[3] = obj.jawaban;
 				shuffle(obj.arrOpsi);
 				for(var a=0; a<4; a++)
 				{
 					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
 				}
+				html+="</ul>";
 			}
 			else if(item[i] == "lsUPD")
 			{
