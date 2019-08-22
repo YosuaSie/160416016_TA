@@ -1198,7 +1198,7 @@ function cekCheckbox(namaChb) {
   	}
 }
 //FUNCTION UNTUK KERJA SOAL
-function dfFunction(paramCekFrekuensi, paramCekJenisVariabel, paramCekJenisData, paramCekSifat, randomPertanyaan, nilaiData, frek) {
+function dfFunction(paramCekJenisVariabel, randomPertanyaan, nilaiData) {
 	var nilaiMax = Math.max.apply(null, nilaiData);
 	var nilaiMin = Math.min.apply(null, nilaiData);
 	var range = 0;
@@ -1225,54 +1225,68 @@ function dfFunction(paramCekFrekuensi, paramCekJenisVariabel, paramCekJenisData,
 	var arrTitikTengah = [];
 	var arrPFkk = [];
 
-	//header
-	if(paramCekFrekuensi == 'belum' && paramCekJenisVariabel == 'diskrit' && paramCekJenisData == 'berkelompok' && paramCekSifat == 'kuantitatif')
+	range = nilaiMax-nilaiMin+1;
+
+	kelasInterval = 1+3.3*Math.log10(nilaiData.length);
+	kelasInterval.toFixed(2);
+
+	lebarKelompok = Math.ceil(range)/Math.ceil(kelasInterval);
+	Math.ceil(lebarKelompok);
+
+	//Masukan Data ke Dalam Tabel Distribusi Frekuensi
+	batasBawah = nilaiMin;
+	if(paramCekJenisVariabel == "diskrit")
 	{
-		range = nilaiMax-nilaiMin+1;
-
-		kelasInterval = 1+3.3*Math.log10(nilaiData.length);
-		kelasInterval.toFixed(2);
-
-		lebarKelompok = Math.ceil(range)/Math.ceil(kelasInterval);
-		Math.ceil(lebarKelompok);
-
-		//Masukan Data ke Dalam Tabel Distribusi Frekuensi
-		batasBawah = nilaiMin;
 		lebarKelompok = Math.ceil(lebarKelompok);
-		for(var i=1; i<=Math.ceil(kelasInterval); i++)
+	}
+	else
+	{
+		lebarKelompok = parseFloat(lebarKelompok.toFixed(2));
+	}
+
+	for(var i=1; i<=Math.ceil(kelasInterval); i++)
+	{
+		if(batasBawah <= nilaiMax)
 		{
-			if(batasBawah <= nilaiMax)
+			frekuensi = 0;
+			//ambil frekuensi
+			for(var a=0; a<nilaiData.length; a++)
 			{
-				frekuensi = 0;
-				//ambil frekuensi
-				for(var a=0; a<nilaiData.length; a++)
+				if(nilaiData[a] >= batasBawah && nilaiData[a] <= batasBawah+lebarKelompok)
 				{
-					if(nilaiData[a] >= batasBawah && nilaiData[a] <= batasBawah+lebarKelompok)
-					{
-						frekuensi++;
-					}
+					frekuensi++;
 				}
+			}
 
-				titikTengah = (batasBawah+batasBawah+lebarKelompok)/2;
+			titikTengah = (batasBawah+batasBawah+lebarKelompok)/2;
 
-				frekRelatif = (frekuensi/nilaiData.length).toFixed(2);
+			frekRelatif = (frekuensi/nilaiData.length).toFixed(2);
 
-				frekKumulatif+=frekuensi;
-				persenFrekKumulatif += parseFloat((frekRelatif*100).toFixed(2));
+			frekKumulatif+=frekuensi;
+			persenFrekKumulatif += parseFloat((frekRelatif*100).toFixed(2));
 
-				//isi array
+			//isi array
+			arrFrek[i-1] = frekuensi;
+			arrFkk[i-1] = frekKumulatif;
+			if(paramCekJenisVariabel == "diskrit")
+			{
 				arrTitikTengah[i-1] = titikTengah;
 				arrTB[i-1] = batasBawah-0.5;
 				arrVariable[i-1] = batasBawah+'-'+(batasBawah+lebarKelompok);
-				arrFrek[i-1] = frekuensi;
-				arrFkk[i-1] = frekKumulatif;
 				arrPFkk[i-1] = persenFrekKumulatif;
-
 				batasBawah = batasBawah+lebarKelompok+1; //diskrit dikasih gap 1 antar data
 			}
+			else
+			{
+				arrTitikTengah[i-1] = titikTengah.toFixed(3);
+				arrTB[i-1] = batasBawah.toFixed(3);
+				arrVariable[i-1] = batasBawah.toFixed(3)+'-'+(batasBawah+lebarKelompok).toFixed(3);
+				arrPFkk[i-1] = persenFrekKumulatif.toFixed(3);
+				batasBawah = batasBawah+lebarKelompok;
+			}
 		}
-
 	}
+
 	if (randomPertanyaan == 1) {
 		return arrVariable;
 	}
@@ -1288,6 +1302,16 @@ function dfFunction(paramCekFrekuensi, paramCekJenisVariabel, paramCekJenisData,
 	else {
 		return arrPFkk;
 	}
+}
+function dfFunctionTunggal(arrData, variabel){
+	var frekuensi = 0;
+	for(var i=0; i<arrData.length; i++){
+		if(arrData[i] == variabel)
+		{
+			frekuensi++;
+		}
+	}
+	return frekuensi;
 }
 function meanTunggal(arrData, arrFrekuensi){
 	var total = 0;
@@ -2430,7 +2454,7 @@ function sdKelompok(arrVariable, arrFrek, cekVarian) {
 }
 
 //FUNCTION RANDOM INPUT
-function randomKualitatif(jumlahData) { //**
+function randomKualitatif(jumlahData, angka) { //**
 
   	var arrayBuah = ['Apel','Jeruk','Mangga','Pir','Kiwi','Melon','Anggur','Sirsak','Leci','Duku', 'Ceri', 'Labu', 'Naga', 'Nanas', 'Jambu', 'Ara', 'Bit', 'Enau', 'Kurma', 'Salak', 'Sawo', 'Tomat', 'Timun', 'Arbei'];
   	var arrayHewan = ['Ayam', 'Sapi', 'Kuda', 'Rusa', 'Itik', 'Ular', 'Zebra', 'Anoa', 'Tawon', 'Unta', 'Macan', 'Semut', 'Babi', 'Belut', 'Buaya', 'Cicak', 'Bebek', 'Domba', 'Gajah', 'Hiena', 'Katak'];
@@ -2438,16 +2462,15 @@ function randomKualitatif(jumlahData) { //**
   	var tampungKata = [];
   	var index = 0;
 
-  	var genRandom = Math.ceil(Math.random() * (3 - 0)) + 0;
-  	if(genRandom == 1) {
+  	if(angka == 1) {
   		while(index < jumlahData) //ambil buah sejumlah baris yang tersedia
 	  	{
-	   		var fruit = arrayWarna[Math.floor(Math.random()*arrayWarna.length)];
+	   		var fruit = arrayBuah[Math.floor(Math.random()*arrayWarna.length)];
 	   		tampungKata[index] = fruit;
 	    	index++;
 		}
   	}
-  	else if(genRandom ==2) {
+  	else if(angka == 2) {
   		while(index < jumlahData) //ambil buah sejumlah baris yang tersedia
 	  	{
 	   		var animal = arrayHewan[Math.floor(Math.random()*arrayHewan.length)];
@@ -2672,10 +2695,15 @@ function randomOpsi(minRandom, maxRandom, jawaban, tipe) {
 			random =  parseFloat(random.toFixed(3));
 		}
 
+		if(random < 0)
+		{
+			random *= -1;
+		}
+
 		var available = false;
 		for(var j=0; j<arrOpsi.length; j++)
 		{
-			if(random == arrOpsi[j])
+			if(random == arrOpsi[j] || random == jawaban) //already available
 			{
 				available = true;
 				break;
@@ -2685,6 +2713,45 @@ function randomOpsi(minRandom, maxRandom, jawaban, tipe) {
 		if(!available)
 		{
 			arrOpsi[success] = random;
+			success++;
+		}
+	}
+	return arrOpsi;
+}
+function randomOpsiVariable(minRandom, maxRandom, jawaban, tipe) {
+	var tempBawah = parseFloat(jawaban.split('-')[0]);
+	var tempAtas = parseFloat(jawaban.split('-')[1]);
+	var selisih = tempAtas - tempBawah;
+	var min=parseFloat(tempBawah)-minRandom;
+	var max=parseFloat(tempBawah)+maxRandom;
+	var arrOpsi = [];
+	var success = 0;
+	while(success < 3) //opsi lain cuma 3
+	{
+		if(tipe == "diskrit")
+		{
+			var random = Math.floor(Math.random() * (+max - +min)) + +min;
+		}
+		else if(tipe == "kontinu")
+		{
+			var random = Math.random() * (+max - +min) + +min;
+			random =  parseFloat(random.toFixed(3));
+		}
+
+		var availableOrMinus = false;
+		for(var j=0; j<arrOpsi.length; j++)
+		{
+			if(random == arrOpsi[j] || random < 0) //already avaailable or value minus
+			{
+				availableOrMinus = true;
+				break;
+			}
+		}
+
+		if(!availableOrMinus)
+		{
+			var atas = random+selisih;
+			arrOpsi[success] = random+"-"+atas;
 			success++;
 		}
 	}
@@ -2783,10 +2850,7 @@ var randomData = 0;
 var frekuensi = 0;
 var soal = 0;
 
-//SOAL DISTRIBUSI FREKUENSI
-function buatSoalDF() { 
-	//random pertanyaan
-	var randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
+function dfPertanyaan(randomPertanyaan) {
 	var tanya = "";
 	if(randomPertanyaan == 1) {
 		tanya = "variabel";
@@ -2803,20 +2867,118 @@ function buatSoalDF() {
 	else {
 		tanya = "persen frekuensi kumulatif";
 	}
+	return tanya;
+}
+//SOAL DISTRIBUSI FREKUENSI
+function buatSoalDF() { 
+	
 	//DF: soal1
+	var randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
+	var tanya = dfPertanyaan(randomPertanyaan);
 	randomData = randomSoalDataULTunggalDiskrit(100, 170, 30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
 	arrData = randomData.split(',');
-	var df = dfFunction("belum", "diskrit", "berkelompok", "kuantitatif", randomPertanyaan, arrData, []);
-	// alert(tanya+"-"+df);
+	var df = dfFunction("diskrit", randomPertanyaan, arrData);
+	// alert(df);
 	var indexJawaban = Math.floor(Math.random() * (df.length - 1)) + 1;
 	var jawaban = df[indexJawaban-1];
-	arrOpsi = randomOpsi(10,10,jawaban,"kontinu");
-	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasinal pada suatu daerah tertentu adalah sebagai berikut:\n"+
+	if(randomPertanyaan == 3 || randomPertanyaan == 4)
+	{
+		arrOpsi = randomOpsi(10,10,jawaban,"diskrit");
+	}
+	else if(randomPertanyaan == 1)
+	{
+		arrOpsi = randomOpsiVariable(10,10,jawaban,"diskrit");
+	}
+	else
+	{
+		arrOpsi = randomOpsi(10,10,jawaban,"kontinu");
+	}
+	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasional pada suatu daerah tertentu adalah sebagai berikut:\n"+
 		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" ke-"+indexJawaban+" dari data tersebut?";
 	arrFrekuensi = [];
 	html = "teste";
 	arrSoalDF[0] = new objSoal(soal,arrOpsi,jawaban,html);
 
+	//DF: soal2
+	randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
+	tanya = dfPertanyaan(randomPertanyaan);
+	randomData = randomSoalDataULTunggalDiskrit(60, 100, 30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
+	arrData = randomData.split(',');
+	df = dfFunction("diskrit", randomPertanyaan, arrData);
+	// alert(df);
+	indexJawaban = Math.floor(Math.random() * (df.length - 1)) + 1;
+	jawaban = df[indexJawaban-1];
+	if(randomPertanyaan == 3 || randomPertanyaan == 4)
+	{
+		arrOpsi = randomOpsi(10,10,jawaban,"diskrit");
+	}
+	else if(randomPertanyaan == 1)
+	{
+		arrOpsi = randomOpsiVariable(10,10,jawaban,"diskrit");
+	}
+	else
+	{
+		arrOpsi = randomOpsi(10,10,jawaban,"kontinu");
+	}
+	soal = "Berat badan dalam kg dari 30 mahasiswa Universitas JKL adalah sebagai berikut:\n"+
+		randomData+".\nBuatlah tabel frekuensi dengan data dikelompokan dan tentukan "+tanya+" ke-"+indexJawaban+" dari data tersebut?";
+	arrFrekuensi = [];
+	html = "teste";
+	arrSoalDF[1] = new objSoal(soal,arrOpsi,jawaban,html);
+
+	//DF: soal3
+	randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
+	tanya = dfPertanyaan(randomPertanyaan);
+	randomData = randomSoalDataULTunggalKontinu(300, 1000, 25, 0.1); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
+	arrData = randomData.split(',');
+	df = dfFunction("kontinu", randomPertanyaan, arrData);
+	// alert(df);
+	indexJawaban = Math.floor(Math.random() * (df.length - 1)) + 1;
+	jawaban = df[indexJawaban-1];
+	if(randomPertanyaan == 3 || randomPertanyaan == 4)
+	{
+		arrOpsi = randomOpsi(10,10,jawaban,"diskrit");
+	}
+	else if(randomPertanyaan == 1)
+	{
+		arrOpsi = randomOpsiVariable(10,10,jawaban,"kontinu");
+	}
+	else
+	{
+		arrOpsi = randomOpsi(10,10,jawaban,"kontinu");
+	}
+	soal = "Hasil ujian matematika siswa SMP C yang dikelompokan adalah sebagai berikut:\n"+
+		randomData+".\nDari data tersebut, tentukan "+tanya+" ke-"+indexJawaban+"?";
+	arrFrekuensi = [];
+	html = "teste";
+	arrSoalDF[2] = new objSoal(soal,arrOpsi,jawaban,html);
+
+	//DF: soal4
+	arrData = randomKualitatif(25, 1); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
+	// alert(df);
+	index = Math.floor(Math.random() * (arrData.length - 1)) + 1;
+	var buah = arrData[index-1];
+	jawaban = dfFunctionTunggal(arrData, buah);
+	arrOpsi = randomOpsi(10,10,jawaban,"diskrit");
+	soal = "Diketahui buah yang disukai 25 siswa SD ABC adalah sebagai berikut:\n"+
+		arrData+".\nDari data tersebut, tentukan frekuensi buah "+buah +"?";
+	arrFrekuensi = [];
+	html = "teste";
+	arrSoalDF[3] = new objSoal(soal,arrOpsi,jawaban,html);
+
+	//DF: soal5
+	randomData = randomSoalDataULTunggalDiskrit(1,5,30);
+	arrData = randomData.split(',');
+	// alert(df);
+	index = Math.floor(Math.random() * (arrData.length - 1)) + 1;
+	var rating = arrData[index-1];
+	jawaban = dfFunctionTunggal(arrData, rating);
+	arrOpsi = randomOpsi(10,10,jawaban,"diskrit");
+	soal = "Diketahui rating seorang driver ojek online adalah sebagai berikut:\n"+
+		arrData+".\nDari data tersebut, tentukan frekuensi driver yang memiliki rating "+rating +"?";
+	arrFrekuensi = [];
+	html = "teste";
+	arrSoalDF[4] = new objSoal(soal,arrOpsi,jawaban,html);
 
 	for(var i=0; i<arrSoalDF.length; i++){
 		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
@@ -3012,12 +3174,12 @@ function buatSoalUKP() {
 	// } 
 
 	//Modus: soal 1
-	arrData = randomKualitatif(25);
+	arrData = randomKualitatif(25, 3);
 	// alert(arrData);
 	var hasilModus = modusTunggal(arrData);
 	while(hasilModus.split('-')[0] == "Tidak ditemukan") //ulang terus sampe ketemu
 	{
-		arrData = randomKualitatif(25);
+		arrData = randomKualitatif(25, 3);
 		hasilModus = modusTunggal(arrData);
 	}
 	soal = "Dari sampel yang diambil, warna baju yang disukai wanita adalah sebagai berikut:\n"+
