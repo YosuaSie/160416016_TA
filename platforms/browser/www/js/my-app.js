@@ -2465,7 +2465,7 @@ function randomKualitatif(jumlahData, angka) { //**
   	if(angka == 1) {
   		while(index < jumlahData) //ambil buah sejumlah baris yang tersedia
 	  	{
-	   		var fruit = arrayBuah[Math.floor(Math.random()*arrayWarna.length)];
+	   		var fruit = arrayBuah[Math.floor(Math.random()*arrayBuah.length)];
 	   		tampungKata[index] = fruit;
 	    	index++;
 		}
@@ -2478,11 +2478,11 @@ function randomKualitatif(jumlahData, angka) { //**
 	    	index++;
 		}
   	}
-  	else {
+  	else if(angka == 3) {
   		while(index < jumlahData) //ambil buah sejumlah baris yang tersedia
 	  	{
-	   		var fruit = arrayWarna[Math.floor(Math.random()*arrayWarna.length)];
-	   		tampungKata[index] = animal;
+	   		var warna = arrayWarna[Math.floor(Math.random()*arrayWarna.length)];
+	   		tampungKata[index] = warna;
 	    	index++;
 		}
   	}
@@ -2832,6 +2832,15 @@ class objSoal{
     }
 }
 
+// FUNCTION LATIHAN SOAL
+function nomorSoal(idx, numSoal) {
+	 for (var i=1;i<=numSoal;i++)
+	 {
+	  	$$("#csoal"+i).hide();
+	 }
+	 $$("#csoal"+idx).show();
+}
+
 var arrSoalDF = [];
 var arrSoalGrafik = [];
 var arrSoalMean = [];
@@ -2984,7 +2993,7 @@ function buatSoalDF() {
 		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
 	}
 }
-buatSoalDF();
+// buatSoalDF();
 
 //SOAL UKURAN PEMUSATAN DATA
 function buatSoalUKP() { 
@@ -3190,7 +3199,7 @@ function buatSoalUKP() {
 	arrOpsi = randomOpsiModus(arrData,arrJawaban);
 	arrSoalModus[0] = new objSoal(soal,arrOpsi,arrJawaban,html);
 
-	//Modus: soal 2
+	// Modus: soal 2
 	randomData = randomFrekuensi(15,50,100);
 	arrData = randomData.split(',');
 	hasilModus = modusTunggal(arrData);
@@ -6196,8 +6205,23 @@ $$(document).on('page:init', function (e, page) {
 	}
 	else if (page.name=="soal")
 	{
-		var html = "";
 		var item=JSON.parse(localStorage.getItem("check"));
+		var ctr=item.length*3;
+
+		  //tampilkan nomor soal dan jawabannya
+		  for(i=1; i <= ctr; i++) {
+		   $$("#ns"+i).show();
+		  }
+		
+		var index = 1;
+		$$(".ns-class").click(function()
+	    {
+	    	index = $$(this).attr('index');
+	    	nomorSoal(index, ctr);
+	    });
+
+		var object = [];
+		var items = 0;
 		for (var i=0;i<item.length;i++)
 		{
 			if (item[i]=="lsUKP")
@@ -6208,40 +6232,16 @@ $$(document).on('page:init', function (e, page) {
 				shuffle(arrSoalModus);
 				
 				//mean
-				var obj = arrSoalMean[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
+				object[items] = arrSoalMean[0];
+				items++;
 
 				//median
-				var obj = arrSoalMedian[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
+				object[items] = arrSoalMedian[0];
+				items++;
 
 				//modus
-				var obj = arrSoalModus[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
+				object[items] = arrSoalModus[0];
+				items++;
 			}
 			else if(item[i] == "lsUL")
 			{
@@ -6249,42 +6249,18 @@ $$(document).on('page:init', function (e, page) {
 				shuffle(arrSoalKuartil);
 				shuffle(arrSoalDesil);
 				shuffle(arrSoalPersentil);
-				
+
 				//kuartil
-				var obj = arrSoalKuartil[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
+			    object[items] = arrSoalKuartil[0];
+				items++;
 
-				//desil
-				var obj = arrSoalDesil[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
+			    //desil
+			    object[items] = arrSoalDesil[0];
+				items++;
 
-				//persentil
-				var obj = arrSoalPersentil[0];
-				html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
+			    //persentil
+			    object[items] = arrSoalPersentil[0];
+				items++;
 			}
 			else if(item[i] == "lsUPD")
 			{
@@ -6296,82 +6272,76 @@ $$(document).on('page:init', function (e, page) {
 				if(random == 1) //varian 2 + SD 1
 				{
 					//varian
-					var obj = arrSoalVarian[0];
-					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-					html+="<div id=\'exTab1\' class=\'container\'>";
-					html+="<li>"+obj.soal+"</li>";
-					obj.arrOpsi[3] = obj.jawaban;
-					shuffle(obj.arrOpsi);
-					for(var a=0; a<4; a++)
-					{
-						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-					}
+					object[items] = arrSoalVarian[0];
+					items++;
 
-					var obj = arrSoalVarian[1];
-					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-					html+="<div id=\'exTab1\' class=\'container\'>";
-					html+="<li>"+obj.soal+"</li>";
-					obj.arrOpsi[3] = obj.jawaban;
-					shuffle(obj.arrOpsi);
-					for(var a=0; a<4; a++)
-					{
-						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-					}
+					object[items] = arrSoalVarian[1];
+					items++;
 
 					//standar deviasi
-					var obj = arrSoalSD[0];
-					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-					html+="<div id=\'exTab1\' class=\'container\'>";
-					html+="<li>"+obj.soal+"</li>";
-					obj.arrOpsi[3] = obj.jawaban;
-					shuffle(obj.arrOpsi);
-					for(var a=0; a<4; a++)
-					{
-						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-					}
+					object[items] = arrSoalSD[0];
+					items++;
 				}
 				if(random == 2) //varian 1 + SD 2
 				{
 					//varian
-					var obj = arrSoalVarian[0];
-					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-					html+="<div id=\'exTab1\' class=\'container\'>";
-					html+="<li>"+obj.soal+"</li>";
-					obj.arrOpsi[3] = obj.jawaban;
-					shuffle(obj.arrOpsi);
-					for(var a=0; a<4; a++)
-					{
-						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-					}
+					object[items] = arrSoalVarian[0];
+					items++;
 
 					//standar deviasi
-					var obj = arrSoalSD[0];
-					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-					html+="<div id=\'exTab1\' class=\'container\'>";
-					html+="<li>"+obj.soal+"</li>";
-					obj.arrOpsi[3] = obj.jawaban;
-					shuffle(obj.arrOpsi);
-					for(var a=0; a<4; a++)
-					{
-						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-					}
+					object[items] = arrSoalSD[0];
+					items++;
 
-					var obj = arrSoalSD[1];
-					html+="<ul style=\'padding: 0%; list-style-type: none;\'>";
-					html+="<div id=\'exTab1\' class=\'container\'>";
-					html+="<li>"+obj.soal+"</li>";
-					obj.arrOpsi[3] = obj.jawaban;
-					shuffle(obj.arrOpsi);
-					for(var a=0; a<4; a++)
-					{
-						html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-					}
+					object[items] = arrSoalSD[1];
+					items++;
 				}
 			}
 		}
-
-		$$("#lsDF").html(html);
+		// alert(object[2].arrOpsi);
+		//masukkan soal
+		for(var i=0; i<object.length; i++)
+		{
+			// alert(i);
+			var html = "";
+			html+="<ul id=\'csoal"+(i+1)+"\' style=\'display:none;padding: 0%; list-style-type: none;\'>";
+			html+="<li><h2>Soal "+(i+1)+"</h2></li>"
+		    html+="<div id=\'exTab1\' class=\'container\'>";
+		    html+="<li>"+object[i].soal+"</li>";
+		    object[i].arrOpsi[3] = object[i].jawaban;
+		    shuffle(object[i].arrOpsi);
+		    for(var a=0; a<4; a++)
+		    {
+		     html+="<input type=\'radio\' name=\'opsi\' value=\'"+object[i].arrOpsi[a]+"\'> "+object[i].arrOpsi[a]+"<br>";
+		    }
+		    html+="<div id=\'ls-jawaban"+(i+1)+"\' style=\'display:none;\'>";
+		    html+="<li style=\'color: #325d79;\'><b>Jawaban</b></li>";
+		    html+="<li id=\'jawaban"+(i+1)+"\' jawaban=\'"+object[i].jawaban+"\'>"+object[i].jawaban+"</li>";
+		    html+="</div>";
+		    html+="</ul>";
+			$$("#lsDF").append(html); //tidak muncul langsung karena display none
+		}
+		$$('#csoal1').show(); //tampilin soal yang pertama
 		//console.log(item);
+
+		//check radio button opsi
+		$$('input[type=radio]').on('click', function()
+		{
+			var jawaban = $$(this).val();
+			$$('#ls-jawaban'+index).show();
+			$$('#csoal'+index).addClass("disabled");
+
+			var jawabBenar = $$('#jawaban'+index).attr('jawaban');
+			if(jawaban == jawabBenar) //benar
+			{
+				// alert("benar");
+				$$('#ns'+index).css('color', 'green');
+			}
+			else //salah
+			{
+				// alert("salah");
+				$$('#ns'+index).css('color', 'red');
+			}
+		});
 	}
 	else if (page.name == "olah-data") 
 	{
