@@ -21,6 +21,10 @@ var app = new Framework7({
 			url: '/latihan-soal.html'
 		},
 		{
+			path: '/ls-akhiri/',
+			url: '/ls-akhiri.html'
+		},
+		{
 			path: '/ruang-uji/',
 			url: '/ruang-uji.html'
 		},
@@ -2833,7 +2837,6 @@ class objSoal{
 }
 
 // FUNCTION LATIHAN SOAL
-<<<<<<< HEAD
 function nomorSoal(idx) {
 	console.log("click");
 	for (var i=0;i<10;i++)
@@ -2841,14 +2844,13 @@ function nomorSoal(idx) {
 		$$("#csoal"+idx).hide();
 	}
 	$$("#csoal"+idx).show();
-=======
+}
 function nomorSoal(idx, numSoal) {
 	 for (var i=1;i<=numSoal;i++)
 	 {
 	  	$$("#csoal"+i).hide();
 	 }
 	 $$("#csoal"+idx).show();
->>>>>>> master
 }
 
 var arrSoalDF = [];
@@ -2869,44 +2871,6 @@ var randomData = 0;
 var frekuensi = 0;
 var soal = 0;
 
-<<<<<<< HEAD
-//SOAL DISTRIBUSI FREKUENSI
-// function buatSoalDF() { 
-// 	//random pertanyaan
-// 	var randomPertanyaan = Math.floor(Math.random() * (6 - 1)) + 1;
-// 	var tanya = "";
-// 	if(randomPertanyaan == 1) {
-// 		tanya = "variabel";
-// 	}
-// 	else if (randomPertanyaan == 2) {
-// 		tanya = "titik tengah";
-// 	}
-// 	else if (randomPertanyaan == 3) {
-// 		tanya = "frekuensi";
-// 	}
-// 	else if (randomPertanyaan == 4) {
-// 		tanya = "frekuensi kumulatif";
-// 	}
-// 	else {
-// 		tanya = "persen frekuensi kumulatif";
-// 	}
-// 	//DF: soal1
-// 	randomData = randomSoalDataULTunggalDiskrit(100, 170,30); //0.1 pengali: angka belakang komanya berapa, ex: 90.25 itu param 4 nya 0.25
-// 	arrData = randomData.split(',');
-// 	var df = dfFunction("belum", "diskrit", "kelompok", "kuantitatif", 1, arrData, []);
-// 	arrOpsi = randomOpsi(10,10,df,"kontinu");
-// 	soal = "Besarnya modal dalam jutaan rupiah dari 30 perusahaan nasinal pada suatu daerah tertentu adalah sebagai berikut:\n"+
-// 		randomData+"\nJika data tersebut dalam bentuk berkelompok, berapakah "+tanya+" setiap kelas?";
-// 	arrFrekuensi = [];
-// 	html = "teste";
-// 	arrSoalDF[0] = new objSoal(soal,arrOpsi,df,html);
-
-
-// 	for(var i=0; i<arrSoalDF.length; i++){
-// 		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
-// 	}
-// }
-=======
 function dfPertanyaan(randomPertanyaan) {
 	var tanya = "";
 	if(randomPertanyaan == 1) {
@@ -3041,7 +3005,6 @@ function buatSoalDF() {
 		alert((i+1)+arrSoalDF[i].soal + ' - '+arrSoalDF[i].arrOpsi+' - '+arrSoalDF[i].jawaban+'\n\n'+arrSoalDF[i].langkahKerja);
 	}
 }
->>>>>>> master
 // buatSoalDF();
 
 //SOAL UKURAN PEMUSATAN DATA
@@ -6254,46 +6217,44 @@ $$(document).on('page:init', function (e, page) {
   			//console.log("click");
   		});
 	}
-	else if (page.name=="soal")
-	{
-<<<<<<< HEAD
+	else if (page.name=="soal") {
 		console.log("in page soal");
 		
 		$$("#ns1").click(function()
+		{
+			console.log("click");
+			for (var i=0;i<10;i++)
 			{
-				console.log("click");
-				for (var i=0;i<10;i++)
-				{
-					$$("#csoal"+i).hide();
-				}
-				$$("#csoal1").show();
-			});
+				$$("#csoal"+i).hide();
+			}
+			$$("#csoal1").show();
+		});
 
 		$$("#ns2").click(function()
+		{
+			console.log("click");
+			for (var i=0;i<10;i++)
 			{
-				console.log("click");
-				for (var i=0;i<10;i++)
-				{
-					$$("#csoal"+i).hide();
-				}
-				$$("#csoal2").show();
-			});
+				$$("#csoal"+i).hide();
+			}
+			$$("#csoal2").show();
+		});
 
 		$$("#ns3").click(function()
-			{
-				nomorSoal(3);
-			});
+		{
+			nomorSoal(3);
+		});
+
 		var html = "";
 		var item=JSON.parse(localStorage.getItem("check"));
 		var ctr=1;
-=======
 		var item=JSON.parse(localStorage.getItem("check"));
 		var ctr=item.length*3;
 
-		  //tampilkan nomor soal dan jawabannya
-		  for(i=1; i <= ctr; i++) {
-		   $$("#ns"+i).show();
-		  }
+		//tampilkan nomor soal dan jawabannya
+		for(i=1; i <= ctr; i++) {
+		$$("#ns"+i).show();
+		}
 		
 		var index = 1;
 		$$(".ns-class").click(function()
@@ -6304,7 +6265,6 @@ $$(document).on('page:init', function (e, page) {
 
 		var object = [];
 		var items = 0;
->>>>>>> master
 		for (var i=0;i<item.length;i++)
 		{
 			if (item[i]=="lsUKP")
@@ -6315,7 +6275,6 @@ $$(document).on('page:init', function (e, page) {
 				shuffle(arrSoalModus);
 				
 				//mean
-<<<<<<< HEAD
 				var obj = arrSoalMean[0];
 				html+="<ul id='csoal"+ctr+"' style=\'padding: 0%; list-style-type: none;\'>";
 				html+="<div id=\'exTab1\' class=\'container\'>";
@@ -6328,12 +6287,10 @@ $$(document).on('page:init', function (e, page) {
 				}
 				html=html+"</ul>";
 				ctr++;
-				
-=======
+
 				object[items] = arrSoalMean[0];
 				items++;
 
->>>>>>> master
 				//median
 				object[items] = arrSoalMedian[0];
 				items++;
@@ -6350,7 +6307,6 @@ $$(document).on('page:init', function (e, page) {
 				shuffle(arrSoalPersentil);
 
 				//kuartil
-<<<<<<< HEAD
 				var obj = arrSoalKuartil[0];
 				html+="<ul id='csoal1' style=\'display:none;padding: 0%; list-style-type: none;\'>";
 				html+="<div id=\'exTab1\' class=\'container\'>";
@@ -6387,7 +6343,6 @@ $$(document).on('page:init', function (e, page) {
 					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
 				}
 				html+="</ul>";
-=======
 			    object[items] = arrSoalKuartil[0];
 				items++;
 
@@ -6398,7 +6353,6 @@ $$(document).on('page:init', function (e, page) {
 			    //persentil
 			    object[items] = arrSoalPersentil[0];
 				items++;
->>>>>>> master
 			}
 			else if(item[i] == "lsUPD")
 			{
@@ -6480,6 +6434,9 @@ $$(document).on('page:init', function (e, page) {
 				$$('#ns'+index).css('color', 'red');
 			}
 		});
+	}
+	else if (page.name=="ls-akhiri") {
+		console.log("a");
 	}
 	else if (page.name == "olah-data") 
 	{
