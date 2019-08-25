@@ -2837,20 +2837,39 @@ class objSoal{
 }
 
 // FUNCTION LATIHAN SOAL
-function nomorSoal(idx) {
-	console.log("click");
-	for (var i=0;i<10;i++)
-	{
-		$$("#csoal"+idx).hide();
-	}
-	$$("#csoal"+idx).show();
-}
 function nomorSoal(idx, numSoal) {
 	 for (var i=1;i<=numSoal;i++)
 	 {
 	  	$$("#csoal"+i).hide();
 	 }
 	 $$("#csoal"+idx).show();
+}
+
+// FUNCTION AKHIRI SOAL
+function ambilTipeSoal(items){
+	for(var i=0; i<items.length; i++){
+		if(items[i] == "lsDF")
+		{
+			items[i] = "Distribusi Frekuensi";
+		}
+		else if(items[i] == "lsGrafik")
+		{
+			items[i] = "Grafik";
+		}
+		else if(items[i] == "lsUKP")
+		{
+			items[i] = "Ukuran Pemusatan Data";
+		}
+		else if(items[i] == "lsUL")
+		{
+			items[i] = "Ukuran Lokasi";
+		}
+		else if(items[i] == "lsUPD")
+		{
+			items[i] = "Ukuran Penyebaran Data";
+		}
+	}
+	return items;
 }
 
 var arrSoalDF = [];
@@ -6218,35 +6237,8 @@ $$(document).on('page:init', function (e, page) {
   		});
 	}
 	else if (page.name=="soal") {
-		console.log("in page soal");
-		
-		$$("#ns1").click(function()
-		{
-			console.log("click");
-			for (var i=0;i<10;i++)
-			{
-				$$("#csoal"+i).hide();
-			}
-			$$("#csoal1").show();
-		});
-
-		$$("#ns2").click(function()
-		{
-			console.log("click");
-			for (var i=0;i<10;i++)
-			{
-				$$("#csoal"+i).hide();
-			}
-			$$("#csoal2").show();
-		});
-
-		$$("#ns3").click(function()
-		{
-			nomorSoal(3);
-		});
 
 		var html = "";
-		var item=JSON.parse(localStorage.getItem("check"));
 		var ctr=1;
 		var item=JSON.parse(localStorage.getItem("check"));
 		var ctr=item.length*3;
@@ -6403,7 +6395,7 @@ $$(document).on('page:init', function (e, page) {
 		    shuffle(object[i].arrOpsi);
 		    for(var a=0; a<4; a++)
 		    {
-		     html+="<input type=\'radio\' name=\'opsi\' value=\'"+object[i].arrOpsi[a]+"\'> "+object[i].arrOpsi[a]+"<br>";
+		     html+="<input type=\'radio\' name=\'opsi"+(i+1)+"\' value=\'"+object[i].arrOpsi[a]+"\'> "+object[i].arrOpsi[a]+"<br>";
 		    }
 		    html+="<div id=\'ls-jawaban"+(i+1)+"\' style=\'display:none;\'>";
 		    html+="<li style=\'color: #325d79;\'><b>Jawaban</b></li>";
@@ -6416,17 +6408,21 @@ $$(document).on('page:init', function (e, page) {
 		//console.log(item);
 
 		//check radio button opsi
+		var salah = (ctr-1);
+		var done = 0;
 		$$('input[type=radio]').on('click', function()
 		{
 			var jawaban = $$(this).val();
 			$$('#ls-jawaban'+index).show();
 			$$('#csoal'+index).addClass("disabled");
+			done++;
 
 			var jawabBenar = $$('#jawaban'+index).attr('jawaban');
 			if(jawaban == jawabBenar) //benar
 			{
 				// alert("benar");
 				$$('#ns'+index).css('color', 'green');
+				salah--;
 			}
 			else //salah
 			{
@@ -6434,9 +6430,59 @@ $$(document).on('page:init', function (e, page) {
 				$$('#ns'+index).css('color', 'red');
 			}
 		});
+
+		$$('#button-akhiri').on('click',function()
+		{
+			if(done == (ctr-1)){
+				var jumlahSoal = ctr-1;
+				var benar = jumlahSoal-salah;
+				var score = benar*100/jumlahSoal;
+				localStorage.setItem("score",score);
+				localStorage.setItem("wrong",salah);
+				localStorage.setItem("correct",benar);
+				page.router.navigate('/ls-akhiri/');
+			}
+			else{
+				alert("Kerjakan semua soal latihan sebelum mengakhiri latihan!")
+			}
+		});
 	}
 	else if (page.name=="ls-akhiri") {
-		console.log("a");
+		var item=JSON.parse(localStorage.getItem("check"));
+		var score=localStorage.getItem("score");
+		var salah=localStorage.getItem("wrong");
+		var benar=localStorage.getItem("correct");
+
+		var soal = ambilTipeSoal(item);
+
+		var html = "<li>Nilai Anda<h2 id='\ls-akhir-nilai'\>"+score+"</h2></li>";
+		html += "<li>"+benar+" soal jawaban benar</li>";
+		html += "<li>"+salah+" soal jawaban salah</li>";
+		if(score == 100){
+			html += "<li><h2>SEMPURNA!<br></h2>Tetap pertahankan penguasaan materi Anda!</li>";
+		}
+		else if(score >= 80 && score < 100){
+			html += "<li><h2>HEBAT!<br></h2>Percobaan yang bagus, Anda hampir menguasai semua materi!</li>";
+		}
+		else if(score >= 60 && score < 80){
+			html += "<li><h2>SEMANGAT!<br></h2>Ayo! Asah pengusaan materi Anda lagi!</li>";
+		}
+		else{
+			html += "<li><h2>AYO BERJUANG!<br></h2>Anda perlu banyak belajar, semua akan mudah jika sering latihan.</li>";
+		}
+		html += "<li><h3>Topik Latihan Soal:</h3></li>";
+		html += "<li>"+soal+"</li>";
+		$$('#container-hasilLS').html(html);
+
+		$$('#ls-lihat').on('click',function()
+		{
+			page.router.back();
+		});
+
+		$$('#ls-tidak').on('click',function()
+		{
+			page.router.navigate('/latihan-soal/');
+		});
 	}
 	else if (page.name == "olah-data") 
 	{
