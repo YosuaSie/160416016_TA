@@ -2707,14 +2707,14 @@ function randomOpsi(minRandom, maxRandom, jawaban, tipe) {
 		var available = false;
 		for(var j=0; j<arrOpsi.length; j++)
 		{
-			if(random == arrOpsi[j] || random == jawaban) //already available
+			if(random == arrOpsi[j]) //already available
 			{
 				available = true;
 				break;
 			}
 		}
 
-		if(!available)
+		if(!available && random != jawaban)
 		{
 			arrOpsi[success] = random;
 			success++;
@@ -3654,7 +3654,7 @@ function buatSoalUL() {
 	soal = "Berapakah persentil ke-"+randomNomorUL+", jika diketahui sampel hasil ujian matematika di suatu kelas adalah sebagai berikut:\n"+randomData;
 	arrSoalPersentil[4] = new objSoal(soal,arrOpsi,parseFloat(hasilPersentil),html);
 
-	//Persentil: Soal 6
+	//Persentil: Soal 6 (jawaban NaN)
 	randomData = randomSoalDataULTunggalDiskrit(104,140,10);
 	arrData = randomData.split(',');
 	randomNomorUL = Math.floor(Math.random() * (100 - 1)) + 1;
@@ -6263,20 +6263,12 @@ $$(document).on('page:init', function (e, page) {
 				shuffle(arrSoalMean);
 				shuffle(arrSoalMedian);
 				shuffle(arrSoalModus);
-				
-				//mean
-				var obj = arrSoalMean[0];
-				html+="<ul id='csoal"+ctr+"' style=\'padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+
+				while(arrSoalMean[0].jawaban == "NaN" || arrSoalMedian[0].jawaban == "NaN" || arrSoalModus[0].jawaban == "NaN" ){
+					shuffle(arrSoalMean);
+					shuffle(arrSoalMedian);
+					shuffle(arrSoalModus);
 				}
-				html=html+"</ul>";
-				ctr++;
 
 				object[items] = arrSoalMean[0];
 				items++;
@@ -6296,43 +6288,12 @@ $$(document).on('page:init', function (e, page) {
 				shuffle(arrSoalDesil);
 				shuffle(arrSoalPersentil);
 
-				//kuartil
-				var obj = arrSoalKuartil[0];
-				html+="<ul id='csoal1' style=\'display:none;padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>xxx"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
+				while(arrSoalKuartil[0].jawaban == "NaN" || arrSoalDesil[0].jawaban == "NaN" || arrSoalPersentil[0].jawaban == "NaN" ){
+					shuffle(arrSoalKuartil);
+					shuffle(arrSoalDesil);
+					shuffle(arrSoalPersentil);
 				}
-				html+="</ul>";
-				//desil
-				var obj = arrSoalDesil[0];
-				html+="<ul id='csoal2' style=\'display:none; padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>xx"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
-				html+="</ul>";
 
-				//persentil
-				var obj = arrSoalPersentil[0];
-				html+="<ul id='csoal3' style=\'display:none; padding: 0%; list-style-type: none;\'>";
-				html+="<div id=\'exTab1\' class=\'container\'>";
-				html+="<li>xx"+obj.soal+"</li>";
-				obj.arrOpsi[3] = obj.jawaban;
-				shuffle(obj.arrOpsi);
-				for(var a=0; a<4; a++)
-				{
-					html+="<input type=\'radio\' name=\'opsi\' value=\'"+obj.arrOpsi[a]+"\'> "+obj.arrOpsi[a]+"<br>";
-				}
-				html+="</ul>";
 			    object[items] = arrSoalKuartil[0];
 				items++;
 
@@ -6353,6 +6314,10 @@ $$(document).on('page:init', function (e, page) {
 				var random = Math.floor(Math.random() * (+2 - +1)) + +1;
 				if(random == 1) //varian 2 + SD 1
 				{
+					while(arrSoalVarian[0].jawaban == "NaN" || arrSoalVarian[1].jawaban == "NaN" || arrSoalSD[0].jawaban == "NaN" ){
+						shuffle(arrSoalVarian);
+						shuffle(arrSoalSD);
+					}
 					//varian
 					object[items] = arrSoalVarian[0];
 					items++;
@@ -6366,6 +6331,10 @@ $$(document).on('page:init', function (e, page) {
 				}
 				if(random == 2) //varian 1 + SD 2
 				{
+					while(arrSoalVarian[0].jawaban == "NaN" || arrSoalSD[1].jawaban == "NaN" || arrSoalSD[0].jawaban == "NaN" ){
+						shuffle(arrSoalVarian);
+						shuffle(arrSoalSD);
+					}
 					//varian
 					object[items] = arrSoalVarian[0];
 					items++;
@@ -6399,6 +6368,9 @@ $$(document).on('page:init', function (e, page) {
 		    html+="<li style=\'color: #325d79;\'><b>Jawaban</b></li>";
 		    html+="<li id=\'jawaban"+(i+1)+"\' jawaban=\'"+object[i].jawaban+"\'>"+object[i].jawaban+"</li>";
 		    html+="</div>";
+		    html+="<div id=\'langkah-kerja"+(i+1)+"\' style=\'display:none;\'>";
+		    html+=object[i].langkahKerja;
+		    html+="</div>";
 		    html+="</ul>";
 			$$("#lsDF").append(html); //tidak muncul langsung karena display none
 		}
@@ -6406,12 +6378,13 @@ $$(document).on('page:init', function (e, page) {
 		//console.log(item);
 
 		//check radio button opsi
-		var salah = (ctr-1);
+		var salah = ctr;
 		var done = 0;
 		$$('input[type=radio]').on('click', function()
 		{
 			var jawaban = $$(this).val();
 			$$('#ls-jawaban'+index).show();
+			$$('#langkah-kerja'+index).show();
 			$$('#csoal'+index).addClass("disabled");
 			done++;
 
@@ -6431,13 +6404,18 @@ $$(document).on('page:init', function (e, page) {
 
 		$$('#button-akhiri').on('click',function()
 		{
-			var jumlahSoal = ctr-1;
+			var jumlahSoal = ctr;
 			var benar = jumlahSoal-salah;
 			var score = benar*100/jumlahSoal;
-			localStorage.setItem("score",score);
-			localStorage.setItem("wrong",salah);
-			localStorage.setItem("correct",benar);
-			page.router.navigate('/ls-akhiri/');
+			if(done == jumlahSoal){
+				localStorage.setItem("score",score);
+				localStorage.setItem("wrong",salah);
+				localStorage.setItem("correct",benar);
+				page.router.navigate('/ls-akhiri/');	
+			}
+			else{
+				alert("Tidak bisa mengakhiri sebelum menyelesaikan latihan soal.");
+			}
 		});
 	}
 	else if (page.name=="ls-akhiri") {
