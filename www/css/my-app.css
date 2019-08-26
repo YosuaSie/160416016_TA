@@ -105,11 +105,11 @@ textarea {
 #daftar-isi ol {
 	margin-bottom: 0px; padding-left: 2vh;	
 }
-#daftar-isi, #wadahLSAkhir ul,li {
+#daftar-isi ul,li {
 	padding-bottom: 1%; padding-left: 0px;
 
 }
-#daftar-isi, #wadahLSAkhir ul>li {
+#daftar-isi ul>li {
 	list-style-type: none;
 	padding-bottom: 1%;
 }

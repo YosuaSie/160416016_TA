@@ -3029,8 +3029,6 @@ function buatSoalDF() {
 //SOAL UKURAN PEMUSATAN DATA
 function buatSoalUKP() { 
 	//Mean: soal1
-
-
 	randomData = randomSoalDataTunggalDiskrit(3,6,1);
 	frekuensi = randomFrekuensi(6,1,20);
 	var arrData = randomData.split(',');
@@ -6421,30 +6419,25 @@ $$(document).on('page:init', function (e, page) {
 			if(jawaban == jawabBenar) //benar
 			{
 				// alert("benar");
-				$$('#ns'+index).css('color', 'green');
+				$$('#td-ns'+index).css('background', '#d8fa98');
 				salah--;
 			}
 			else //salah
 			{
 				// alert("salah");
-				$$('#ns'+index).css('color', 'red');
+				$$('#td-ns'+index).css('background', '#ffad9e');
 			}
 		});
 
 		$$('#button-akhiri').on('click',function()
 		{
-			if(done == (ctr-1)){
-				var jumlahSoal = ctr-1;
-				var benar = jumlahSoal-salah;
-				var score = benar*100/jumlahSoal;
-				localStorage.setItem("score",score);
-				localStorage.setItem("wrong",salah);
-				localStorage.setItem("correct",benar);
-				page.router.navigate('/ls-akhiri/');
-			}
-			else{
-				alert("Kerjakan semua soal latihan sebelum mengakhiri latihan!")
-			}
+			var jumlahSoal = ctr-1;
+			var benar = jumlahSoal-salah;
+			var score = benar*100/jumlahSoal;
+			localStorage.setItem("score",score);
+			localStorage.setItem("wrong",salah);
+			localStorage.setItem("correct",benar);
+			page.router.navigate('/ls-akhiri/');
 		});
 	}
 	else if (page.name=="ls-akhiri") {
